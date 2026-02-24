@@ -1,0 +1,13 @@
+{
+    "name": "elektrikar-apps",
+    "version": "1.0.0",
+    "description": "Volt & Amper Kingdom — Aplikace pro elektrikáře z AI Studio Builderu",
+    "scripts": {
+        "dev": "serve .",
+        "add-exercise": "node scripts/build-exercise.js"
+    },
+    "devDependencies": {
+        "adm-zip": "^0.5.16",
+        "serve": "^14.2.0"
+    }
+}

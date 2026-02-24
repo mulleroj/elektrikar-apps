@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volt & Amper Kingdom | Aplikace pro elektrikáře</title>
+    <meta name="description" content="Interaktivní aplikace pro obor Elektrikář vytvořené v AI Studio Builderu">
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">Volt & Amper Kingdom</span>
+                </div>
+                <nav class="nav">
+                    <a href="#apps" class="nav-link">Aplikace</a>
+                    <a href="#how-to" class="nav-link" id="adminNavLink" hidden>Jak přidat</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="gradient-text">Aplikace pro elektrikáře</span>
+                        <br>z AI Studio Builderu
+                    </h1>
+                    <p class="hero-description">
+                        Galerie vzdělávacích aplikací a nástrojů pro obor Elektrikář vytvořených pomocí vibe codingu v
+                        AI Studio Builderu.
+                    </p>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="pic/index.png" alt="Volt and Amper Kingdom" class="hero-image">
+                        <div class="hero-image-glow"></div>
+                    </div>
+                    <div class="floating-cards">
+                        <div class="floating-card card-1">⚡</div>
+                        <div class="floating-card card-2">🔌</div>
+                        <div class="floating-card card-3">🔧</div>
+                        <div class="floating-card card-4">💡</div>
+                        <div class="floating-card card-5">🔋</div>
+                        <div class="floating-card card-6">🛠️</div>
+                        <div class="floating-card card-7">👷</div>
+                        <div class="floating-card card-8">⚙️</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Section (hidden by default, shown with ?admin) -->
+        <section class="upload-section" id="upload" hidden>
+            <div class="container">
+                <!-- GitHub Settings -->
+                <div class="github-settings" id="githubSettings">
+                    <div class="settings-header">
+                        <span class="settings-icon">⚙️</span>
+                        <h3>Nastavení GitHub uploadu</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="githubToken">GitHub Token:</label>
+                            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxx..." autocomplete="off">
+                            <small>Token se ukládá pouze v prohlížeči</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="githubRepo">Repozitář:</label>
+                            <input type="text" id="githubRepo" value="mulleroj/elektrikar-apps"
+                                placeholder="vlastnik/repo">
+                        </div>
+                        <button class="btn btn-secondary" id="saveSettings">💾 Uložit nastavení</button>
+                    </div>
+                </div>
+
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📦</div>
+                    <h3 class="upload-title">Přetáhněte ZIP soubor sem</h3>
+                    <p class="upload-description">nebo klikněte pro výběr souboru</p>
+                    <input type="file" id="fileInput" accept=".zip" hidden>
+                </div>
+                <div class="upload-progress" id="uploadProgress" hidden>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">Zpracovávám...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Apps Gallery -->
+        <section class="exercises-section" id="apps">
+            <div class="container">
+                <h2 class="section-title">⚡ Vaše aplikace</h2>
+                <div class="exercises-grid" id="exercisesGrid">
+                    <!-- Dynamicky generované karty -->
+                </div>
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">🔌</div>
+                    <h3>Zatím žádné aplikace</h3>
+                    <p>Nahrajte ZIP soubor výše nebo přidejte aplikaci do složky <code>exercises/</code></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How To Section (hidden by default, shown with ?admin) -->
+        <section class="how-to-section" id="how-to" hidden>
+            <div class="container">
+                <h2 class="section-title">📖 Jak přidat aplikaci</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Stáhněte ZIP</h3>
+                        <p>V AI Studio Builderu exportujte svou aplikaci jako ZIP soubor.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Nahrajte</h3>
+                        <p>Přetáhněte ZIP soubor do upload zóny nahoře nebo klikněte pro výběr.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Počkejte</h3>
+                        <p>GitHub Actions automaticky rozbalí a zpracuje vaši aplikaci.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3>Hotovo!</h3>
+                        <p>Za ~2 minuty bude aplikace dostupná v galerii.</p>
+                    </div>
+                </div>
+
+                <div class="meta-example">
+                    <h3>📄 Příklad meta.json</h3>
+                    <pre><code>{
+  "name": "Název aplikace",
+  "description": "Popis co aplikace dělá",
+  "icon": "⚡",
+  "created": "2026-02-24"
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>⚡ Volt & Amper Kingdom — Vytvořeno pro výuku s AI Studio Builderem</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Exercise Modal -->
+    <div class="modal" id="exerciseModal" hidden>
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">✕</button>
+            <iframe id="exerciseFrame" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="scripts/app.js"></script>
+</body>
+
+</html>
