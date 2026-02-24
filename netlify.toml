@@ -1,7 +1,5 @@
-# example netlify.toml
 [build]
-  command = "# no build command"
-  functions = "netlify/functions"
+  command = "echo 'No build needed'"
   publish = "."
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
