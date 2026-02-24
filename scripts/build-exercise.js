@@ -3,13 +3,9 @@
  * 
  * Usage: node scripts/build-exercise.js <path-to-zip>
  * 
- * This script:
- * 1. Extracts the ZIP file
- * 2. Installs dependencies
- * 3. Builds the production version
- * 4. Fixes asset paths for subdirectory deployment
- * 5. Copies output to exercises folder
- * 6. Updates manifest.json
+ * Supports:
+ * A) Node.js projects with package.json + build script → npm install + npm run build
+ * B) Static HTML projects (just index.html) → copy as-is
  */
 
 const { execSync } = require('child_process');
@@ -22,7 +18,6 @@ const zipPath = process.argv[2];
 if (!zipPath) {
     console.log('❌ Chyba: Nezadali jste cestu k ZIP souboru\n');
     console.log('Použití: npm run add-exercise <cesta-k-zip>');
-    console.log('Příklad: npm run add-exercise C:\\Downloads\\ohmuv-zakon.zip');
     process.exit(1);
 }
 
@@ -43,76 +38,138 @@ console.log('📦 Rozbaluji ZIP soubor...');
 const zip = new AdmZip(zipPath);
 zip.extractAllTo(tempDir, true);
 
+// Find the actual project root (handle ZIP with single subdirectory)
 let projectDir = tempDir;
-const entries = fs.readdirSync(tempDir);
+const entries = fs.readdirSync(tempDir).filter(e => !e.startsWith('.'));
 if (entries.length === 1) {
     const possibleDir = path.join(tempDir, entries[0]);
     if (fs.statSync(possibleDir).isDirectory()) projectDir = possibleDir;
 }
 
+// Determine project type and name
 const packageJsonPath = path.join(projectDir, 'package.json');
-if (!fs.existsSync(packageJsonPath)) {
-    console.log('❌ Chyba: ZIP neobsahuje package.json');
-    fs.rmSync(tempDir, { recursive: true });
-    process.exit(1);
+const hasPackageJson = fs.existsSync(packageJsonPath);
+const hasIndexHtml = fs.existsSync(path.join(projectDir, 'index.html'));
+
+let projectName = path.basename(zipPath, '.zip').replace(/[^a-zA-Z0-9\s-]/g, '').trim();
+let packageJson = {};
+
+if (hasPackageJson) {
+    packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    projectName = packageJson.name || projectName;
 }
 
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-const projectName = packageJson.name || path.basename(zipPath, '.zip');
-const safeName = projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+const safeName = projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+console.log(`📋 Název aplikace: ${projectName} (${safeName})`);
 
-console.log(`📋 Název aplikace: ${projectName}`);
+let outputDir = null;
 
-console.log('📥 Instaluji závislosti (npm install)...');
-try {
-    execSync('npm install', { cwd: projectDir, stdio: 'pipe', timeout: 180000 });
-} catch (error) {
-    console.log('⚠️ Varování: Některé závislosti se nepodařilo nainstalovat');
-}
+if (hasPackageJson && packageJson.scripts && packageJson.scripts.build) {
+    // === PATH A: Node.js project with build script ===
+    console.log('🔧 Detekován Node.js projekt s build scriptem');
 
-const viteConfigPath = path.join(projectDir, 'vite.config.ts');
-const viteConfigJsPath = path.join(projectDir, 'vite.config.js');
-
-if (fs.existsSync(viteConfigPath)) {
-    let config = fs.readFileSync(viteConfigPath, 'utf8');
-    if (!config.includes("base:")) {
-        config = config.replace(/export default defineConfig\(\{/, "export default defineConfig({\n  base: './',");
-        fs.writeFileSync(viteConfigPath, config);
-        console.log('🔧 Upravuji vite.config.ts pro relativní cesty...');
+    console.log('📥 Instaluji závislosti (npm install)...');
+    try {
+        execSync('npm install', { cwd: projectDir, stdio: 'pipe', timeout: 180000 });
+        console.log('✅ Závislosti nainstalovány');
+    } catch (error) {
+        console.log('⚠️ Varování: Některé závislosti se nepodařilo nainstalovat');
     }
-} else if (fs.existsSync(viteConfigJsPath)) {
-    let config = fs.readFileSync(viteConfigJsPath, 'utf8');
-    if (!config.includes("base:")) {
-        config = config.replace(/export default defineConfig\(\{/, "export default defineConfig({\n  base: './',");
-        fs.writeFileSync(viteConfigJsPath, config);
-        console.log('🔧 Upravuji vite.config.js pro relativní cesty...');
+
+    // Patch vite config for relative paths
+    for (const configFile of ['vite.config.ts', 'vite.config.js', 'vite.config.mjs']) {
+        const configPath = path.join(projectDir, configFile);
+        if (fs.existsSync(configPath)) {
+            let config = fs.readFileSync(configPath, 'utf8');
+            if (!config.includes("base:") && !config.includes("base :")) {
+                config = config.replace(
+                    /export default defineConfig\(\{/,
+                    "export default defineConfig({\n  base: './',"
+                );
+                fs.writeFileSync(configPath, config);
+                console.log(`🔧 Upravuji ${configFile} pro relativní cesty...`);
+            }
+            break;
+        }
     }
-}
 
-console.log('🔨 Vytvářím produkční build...');
-try {
-    execSync('npm run build', { cwd: projectDir, stdio: 'pipe', timeout: 180000 });
-} catch (error) {
-    console.log('❌ Chyba při buildu:');
-    console.log(error.message);
+    console.log('🔨 Vytvářím produkční build...');
+    try {
+        execSync('npm run build', { cwd: projectDir, stdio: 'pipe', timeout: 300000 });
+        console.log('✅ Build úspěšný');
+    } catch (error) {
+        console.log('⚠️ Build selhal, zkouším použít zdrojové soubory...');
+        // Fallback: if build fails but index.html exists, use as static
+        if (hasIndexHtml) {
+            outputDir = projectDir;
+        } else {
+            console.log('❌ Build selhal a nebyl nalezen index.html');
+            fs.rmSync(tempDir, { recursive: true });
+            process.exit(1);
+        }
+    }
+
+    if (!outputDir) {
+        // Find build output directory
+        const possibleBuildDirs = ['dist', 'build', 'out', '.output', 'public'];
+        for (const dir of possibleBuildDirs) {
+            const fullPath = path.join(projectDir, dir);
+            if (fs.existsSync(fullPath) && fs.statSync(fullPath).isDirectory()) {
+                // Make sure the directory has an index.html
+                if (fs.existsSync(path.join(fullPath, 'index.html'))) {
+                    outputDir = fullPath;
+                    break;
+                }
+            }
+        }
+
+        if (!outputDir) {
+            // Try using project dir itself if it has index.html
+            if (hasIndexHtml) {
+                console.log('⚠️ Nenalezen výstupní adresář, používám zdrojové soubory');
+                outputDir = projectDir;
+            } else {
+                console.log('❌ Nenalezen výstupní adresář s index.html');
+                fs.rmSync(tempDir, { recursive: true });
+                process.exit(1);
+            }
+        }
+    }
+
+} else if (hasIndexHtml) {
+    // === PATH B: Static HTML project ===
+    console.log('📄 Detekován statický HTML projekt (žádný build potřeba)');
+    outputDir = projectDir;
+
+} else if (hasPackageJson) {
+    // Has package.json but no build script — try if there's an index.html somewhere
+    console.log('📦 Package.json bez build scriptu');
+    if (hasIndexHtml) {
+        outputDir = projectDir;
+    } else {
+        // Check if there's a public or src directory with index.html
+        for (const dir of ['public', 'src', 'dist', 'build']) {
+            const checkPath = path.join(projectDir, dir, 'index.html');
+            if (fs.existsSync(checkPath)) {
+                outputDir = path.join(projectDir, dir);
+                break;
+            }
+        }
+        if (!outputDir) {
+            console.log('❌ Nelze najít index.html v projektu');
+            fs.rmSync(tempDir, { recursive: true });
+            process.exit(1);
+        }
+    }
+
+} else {
+    console.log('❌ ZIP neobsahuje ani package.json ani index.html');
     fs.rmSync(tempDir, { recursive: true });
     process.exit(1);
 }
 
-const possibleBuildDirs = ['dist', 'build', 'out', '.output'];
-let buildDir = null;
-for (const dir of possibleBuildDirs) {
-    const fullPath = path.join(projectDir, dir);
-    if (fs.existsSync(fullPath) && fs.statSync(fullPath).isDirectory()) { buildDir = fullPath; break; }
-}
-
-if (!buildDir) {
-    console.log('❌ Chyba: Nenalezen výstupní adresář (dist/build)');
-    fs.rmSync(tempDir, { recursive: true });
-    process.exit(1);
-}
-
-const indexHtmlPath = path.join(buildDir, 'index.html');
+// Fix asset paths in index.html
+const indexHtmlPath = path.join(outputDir, 'index.html');
 if (fs.existsSync(indexHtmlPath)) {
     let html = fs.readFileSync(indexHtmlPath, 'utf8');
     html = html.replace(/href="\//g, 'href="./');
@@ -121,6 +178,7 @@ if (fs.existsSync(indexHtmlPath)) {
     console.log('🔧 Opravuji cesty v index.html...');
 }
 
+// Copy to exercises folder
 const targetDir = path.join(exercisesDir, safeName);
 if (fs.existsSync(targetDir)) {
     console.log(`⚠️ Nahrazuji existující aplikaci: ${safeName}`);
@@ -128,9 +186,11 @@ if (fs.existsSync(targetDir)) {
 }
 
 fs.mkdirSync(targetDir, { recursive: true });
-copyRecursive(buildDir, targetDir);
 
-const metaPath = path.join(targetDir, 'meta.json');
+// Filter out node_modules and other unnecessary files
+copyRecursive(outputDir, targetDir, ['node_modules', '.git', '.github', 'temp-build']);
+
+// Create meta.json
 const meta = {
     id: `built-${safeName}`,
     name: projectName,
@@ -140,27 +200,29 @@ const meta = {
     folder: safeName,
     isBuilt: true
 };
-fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
+fs.writeFileSync(path.join(targetDir, 'meta.json'), JSON.stringify(meta, null, 2));
 
+// Update manifest
 updateManifest(exercisesDir, meta);
+
+// Cleanup
 fs.rmSync(tempDir, { recursive: true });
 
 console.log('\n✅ Aplikace úspěšně přidána!');
 console.log(`📁 Umístění: exercises/${safeName}`);
 console.log(`🌐 URL: /exercises/${safeName}/index.html`);
-console.log('\nPro nasazení na Netlify:');
-console.log('  git add .');
-console.log('  git commit -m "Přidána aplikace: ' + projectName + '"');
-console.log('  git push');
 
-function copyRecursive(src, dest) {
+// === Helper functions ===
+
+function copyRecursive(src, dest, excludes = []) {
     const entries = fs.readdirSync(src, { withFileTypes: true });
     for (const entry of entries) {
+        if (excludes.includes(entry.name)) continue;
         const srcPath = path.join(src, entry.name);
         const destPath = path.join(dest, entry.name);
         if (entry.isDirectory()) {
             fs.mkdirSync(destPath, { recursive: true });
-            copyRecursive(srcPath, destPath);
+            copyRecursive(srcPath, destPath, excludes);
         } else {
             fs.copyFileSync(srcPath, destPath);
         }
