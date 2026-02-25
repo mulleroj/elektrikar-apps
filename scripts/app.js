@@ -237,6 +237,26 @@ async function uploadToGitHub(path, base64Content, message) {
     const [owner, repo] = githubSettings.repo.split('/');
     const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
     try {
+        // Check if file already exists to get its sha (required for overwrite)
+        let sha = null;
+        try {
+            const checkResponse = await fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${githubSettings.token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+            if (checkResponse.ok) {
+                const existingFile = await checkResponse.json();
+                sha = existingFile.sha;
+            }
+        } catch (e) {
+            // File doesn't exist, that's fine
+        }
+
+        const body = { message, content: base64Content };
+        if (sha) body.sha = sha;
+
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
@@ -244,7 +264,7 @@ async function uploadToGitHub(path, base64Content, message) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/vnd.github.v3+json'
             },
-            body: JSON.stringify({ message, content: base64Content })
+            body: JSON.stringify(body)
         });
         if (!response.ok) {
             const data = await response.json().catch(() => ({}));
