@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulátor Elektroinstalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+            padding: 16px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0f172a;
+            padding: 24px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .tabs {
+            display: flex;
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .tab {
+            padding: 8px 20px;
+            border-radius: 6px;
+            border: none;
+            color: #fff;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .tab.active {
+            background: #2563eb;
+        }
+
+        .toolbar {
+            padding: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: #f8fafc;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .mode-btns {
+            display: flex;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .mode-btn {
+            padding: 6px 16px;
+            border: none;
+            background: #fff;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .mode-btn.active {
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .breaker {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .breaker.on {
+            background: #16a34a;
+            border-color: #15803d;
+        }
+
+        .breaker.off {
+            background: #dc2626;
+            border-color: #b91c1c;
+        }
+
+        .breaker-lever {
+            width: 16px;
+            height: 24px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            transition: transform 0.2s;
+        }
+
+        .breaker.on .breaker-lever {
+            transform: rotateX(35deg);
+        }
+
+        .breaker.off .breaker-lever {
+            transform: rotateX(-35deg);
+        }
+
+        .sim-area {
+            padding: 32px;
+        }
+
+        .circuit {
+            position: relative;
+            height: 260px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 16px;
+        }
+
+        .switch-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .switch-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .switch-label.cross {
+            color: #3b82f6;
+        }
+
+        .rocker {
+            width: 40px;
+            height: 56px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .rocker.normal {
+            background: #e2e8f0;
+        }
+
+        .rocker.cross {
+            background: #bfdbfe;
+        }
+
+        .rocker-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            border: 1px solid;
+            transition: transform 0.15s, box-shadow 0.15s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+
+        .rocker.normal .rocker-inner {
+            background: #fff;
+            border-color: #cbd5e1;
+        }
+
+        .rocker.cross .rocker-inner {
+            background: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+        .rocker-inner.up {
+            transform: perspective(200px) rotateX(25deg);
+            box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .rocker-inner.down {
+            transform: perspective(200px) rotateX(-25deg);
+            box-shadow: 0 -4px 2px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .rocker-line {
+            width: 12px;
+            height: 2px;
+            border-radius: 1px;
+        }
+
+        .rocker.normal .rocker-line {
+            background: #cbd5e1;
+        }
+
+        .rocker.cross .rocker-line {
+            background: #93c5fd;
+        }
+
+        .bulb-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .bulb-status {
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .bulb-status.on {
+            color: #ca8a04;
+        }
+
+        .bulb-status.off {
+            color: #94a3b8;
+        }
+
+        .circuit svg.wires {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wire-live {
+            stroke: #f97316;
+        }
+
+        .wire-dead {
+            stroke: #475569;
+        }
+
+        .note {
+            margin-top: 32px;
+            background: #0f172a;
+            padding: 24px;
+            border-radius: 12px;
+            color: #fff;
+        }
+
+        .note h3 {
+            color: #60a5fa;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .note p {
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .note strong {
+            color: #fff;
+        }
+
+        /* Test */
+        .test-area {
+            padding: 32px;
+        }
+
+        .test-card {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .test-meta {
+            font-size: 10px;
+            font-weight: 700;
+            color: #2563eb;
+            text-transform: uppercase;
+        }
+
+        .test-question {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .test-diagram {
+            margin: 20px 0;
+        }
+
+        .test-diagram svg {
+            width: 100%;
+            height: 120px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 14px 16px;
+            text-align: left;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #60a5fa;
+        }
+
+        .option-btn.correct {
+            background: #dcfce7;
+            border-color: #22c55e;
+        }
+
+        .option-btn.wrong {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+
+        .option-btn.faded {
+            opacity: 0.5;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 16px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feedback p {
+            font-size: 12px;
+            color: #64748b;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .result {
+            text-align: center;
+            padding: 48px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .result h2 {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+
+        .result .score {
+            font-size: 56px;
+            font-weight: 900;
+            color: #2563eb;
+            margin-bottom: 32px;
+        }
+
+        .retry-btn {
+            width: 100%;
+            padding: 16px;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .footer {
+            background: #f8fafc;
+            border-top: 1px solid #f1f5f9;
+            padding: 16px;
+            text-align: center;
+            font-size: 9px;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header h1 {
+                font-size: 15px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .circuit {
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="app"></div>
+
+    <script>
+        // State
+        let state = {
+            tab: 'sim',
+            mode: 6,
+            sw1: 0, swMid: 0, sw2: 0,
+            breaker: true,
+            currentQ: 0, score: 0, showResult: false,
+            feedback: null
+        };
+
+        const QUESTIONS = [
+            { text: "Kolik připojovacích svorek má standardní křížový přepínač (Řazení 7)?", diag: 'terminals', options: ["2 svorky", "3 svorky", "4 svorky", "5 svorek"], correct: 2, explanation: "Křížový přepínač má 4 svorky – dva páry pro korespondenční vodiče." },
+            { text: "Jakou barvu má podle normy nulový vodič (N)?", diag: 'wires', options: ["Zelenožlutá", "Hnědá", "Černá", "Světle modrá"], correct: 3, explanation: "Nulový vodič (N) je v domovních instalacích vždy světle modrý." },
+            { text: "Které řazení vypínačů je zobrazeno na schématu ovládání ze dvou míst?", diag: 'twoswitches', options: ["2x řazení 1", "2x řazení 6", "1x řazení 6 a 1x řazení 7", "2x řazení 5"], correct: 1, explanation: "Pro dvě místa se používají dva střídavé přepínače (řazení 6)." },
+            { text: "Který vodič na schématu smí být přerušen vypínačem?", diag: 'safety', options: ["Modrý (N)", "Zelenožlutý (PE)", "Hnědý/Oranžový (L)", "Všechny tři"], correct: 2, explanation: "Vypínačem se vždy přerušuje pouze fáze (L). N a PE nesmí být nikdy přerušeny!" },
+            { text: "Jaký nástroj je nejvhodnější pro bezpečné odpláštění kabelu CYKY?", diag: 'stripper', options: ["Kuchyňský nůž", "Kombinované kleště", "Nože na kabely (Jokari)", "Plochý šroubovák"], correct: 2, explanation: "Nože na kabely umožňují nastavit hloubku řezu bez poškození izolace žil." },
+            { text: "Jakou jmenovitou hodnotu jističe B zvolíte pro světelný okruh 1.5 mm²?", diag: 'breaker_diag', options: ["B 6A", "B 10A", "B 16A", "B 20A"], correct: 1, explanation: "Pro světelné okruhy s průřezem 1.5 mm² se standardně používá jistič 10A." },
+            { text: "Kde se u střídavého přepínače zapojuje přívodní fáze?", diag: 'terminals', options: ["Na libovolnou svorku", "Na společnou svorku (L)", "Na korespondenční svorku", "Nikam"], correct: 1, explanation: "Přívodní fáze musí být na společné svorce (označené L nebo šipkou)." },
+            { text: "Může být křížový vypínač (řazení 7) použit jako první v řadě?", diag: 'terminals', options: ["Ano", "Ne, musí být mezi řazením 6", "Ano, ale světlo bude blikat", "Jen v průmyslu"], correct: 1, explanation: "Křížový vypínač se vkládá vždy mezi dva střídavé přepínače (řazení 6)." },
+            { text: "Jak se nazývají vodiče propojující dva přepínače řazení 6?", diag: 'twoswitches', options: ["Hlavní přívody", "Nulové vodiče", "Korespondenční vodiče", "Zemnící vodiče"], correct: 2, explanation: "Vodiče přenášející fázi mezi vypínači jsou korespondenční vodiče." },
+            { text: "Co znamená barevné značení Zelenožlutá?", diag: 'wires', options: ["Fázový vodič", "Nulový vodič", "Ochranný vodič (PE)", "Signální vodič"], correct: 2, explanation: "Zelenožlutá barva je vyhrazena výhradně pro ochranný vodič PE." }
+        ];
+
+        function getDiagramSVG(type) {
+            const diagrams = {
+                terminals: `<svg viewBox="0 0 200 100"><rect x="70" y="20" width="60" height="60" rx="4" fill="white" stroke="#334155" stroke-width="2"/><circle cx="85" cy="35" r="4" fill="#ef4444"/><circle cx="115" cy="35" r="4" fill="#ef4444"/><circle cx="100" cy="70" r="4" fill="#ef4444"/><text x="100" y="95" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="bold">SVORKY PŘEPÍNAČE</text></svg>`,
+                wires: `<svg viewBox="0 0 200 100"><rect x="40" y="40" width="120" height="20" rx="10" fill="#cbd5e1"/><circle cx="65" cy="50" r="6" fill="#92400e"/><circle cx="100" cy="50" r="6" fill="#2563eb"/><circle cx="135" cy="50" r="6" fill="#22c55e"/><text x="100" y="85" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="bold">KABEL CYKY-J</text></svg>`,
+                twoswitches: `<svg viewBox="0 0 200 100"><rect x="30" y="35" width="30" height="30" fill="white" stroke="#334155" stroke-width="2"/><line x1="60" y1="45" x2="140" y2="45" stroke="#334155" stroke-width="2" stroke-dasharray="4"/><line x1="60" y1="55" x2="140" y2="55" stroke="#334155" stroke-width="2" stroke-dasharray="4"/><rect x="140" y="35" width="30" height="30" fill="white" stroke="#334155" stroke-width="2"/><text x="100" y="85" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="bold">LINIOVÉ SCHÉMA</text></svg>`,
+                safety: `<svg viewBox="0 0 200 100"><line x1="30" y1="30" x2="170" y2="30" stroke="#3b82f6" stroke-width="2"/><line x1="30" y1="50" x2="170" y2="50" stroke="#22c55e" stroke-width="2"/><line x1="30" y1="70" x2="170" y2="70" stroke="#f97316" stroke-width="2"/><rect x="90" y="62" width="20" height="15" fill="white" stroke="red" stroke-width="2"/><text x="20" y="35" font-size="10">N</text><text x="18" y="55" font-size="10">PE</text><text x="22" y="75" font-size="10">L</text></svg>`,
+                stripper: `<svg viewBox="0 0 200 100"><path d="M50 70 L80 30 L150 30 L150 40 L85 40 L55 80 Z" fill="#ef4444"/><circle cx="120" cy="35" r="5" fill="#64748b"/></svg>`,
+                breaker_diag: `<svg viewBox="0 0 200 100"><rect x="85" y="20" width="30" height="60" rx="2" fill="white" stroke="#334155" stroke-width="2"/><rect x="92" y="35" width="16" height="25" fill="#94a3b8"/><text x="100" y="52" text-anchor="middle" font-size="10" font-weight="bold">B10</text></svg>`
+            };
+            return diagrams[type] || '';
+        }
+
+        function computeLight() {
+            const { sw1, sw2, swMid, breaker, mode } = state;
+            const livePath1 = breaker && sw1 === 0;
+            const livePath2 = breaker && sw1 === 1;
+            let fp1, fp2;
+            if (mode === 7) {
+                fp1 = swMid === 0 ? livePath1 : livePath2;
+                fp2 = swMid === 0 ? livePath2 : livePath1;
+            } else {
+                fp1 = livePath1; fp2 = livePath2;
+            }
+            return sw2 === 0 ? fp1 : fp2;
+        }
+
+        function wireColor(isLive) { return isLive ? '#f97316' : '#475569'; }
+
+        function render() {
+            const { tab, mode, sw1, sw2, swMid, breaker } = state;
+            const isLightOn = computeLight();
+            const livePath1 = breaker && sw1 === 0;
+            const livePath2 = breaker && sw1 === 1;
+            let fp1, fp2;
+            if (mode === 7) {
+                fp1 = swMid === 0 ? livePath1 : livePath2;
+                fp2 = swMid === 0 ? livePath2 : livePath1;
+            } else { fp1 = livePath1; fp2 = livePath2; }
+
+            let html = `
+        <div class="header">
+          <h1>⚡ Simulátor Elektroinstalace: Proudová cesta</h1>
+          <div class="tabs">
+            <button class="tab ${tab === 'sim' ? 'active' : ''}" onclick="setTab('sim')">Schéma</button>
+            <button class="tab ${tab === 'test' ? 'active' : ''}" onclick="setTab('test')">Test</button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="toolbar-label">Typ obvodu:</span>
+            <div class="mode-btns">
+              <button class="mode-btn ${mode === 6 ? 'active' : ''}" onclick="setMode(6)">Řazení 6</button>
+              <button class="mode-btn ${mode === 7 ? 'active' : ''}" onclick="setMode(7)">Řazení 7</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="toolbar-label">Hlavní jistič:</span>
+            <div class="breaker ${breaker ? 'on' : 'off'}" onclick="toggleBreaker()">
+              <div class="breaker-lever"></div>
+            </div>
+          </div>
+        </div>`;
+
+            if (tab === 'sim') {
+                const midPath1 = mode === 7 ? (swMid === 0 ? 'M 45 35 L 55 35' : 'M 45 35 L 55 65') : '';
+                const midPath2 = mode === 7 ? (swMid === 0 ? 'M 45 65 L 55 65' : 'M 45 65 L 55 35') : '';
+                html += `<div class="sim-area">
+          <div class="circuit">
+            <svg class="wires" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <line x1="5" y1="50" x2="20" y2="50" stroke="${wireColor(breaker)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              <path d="M 23 48 L 40 35" fill="none" stroke="${wireColor(livePath1)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              <path d="M 23 52 L 40 65" fill="none" stroke="${wireColor(livePath2)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              ${mode === 6 ? `
+                <path d="M 40 35 L 77 48" fill="none" stroke="${wireColor(livePath1)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                <path d="M 40 65 L 77 52" fill="none" stroke="${wireColor(livePath2)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              ` : `
+                <path d="M 40 35 L 45 35" fill="none" stroke="${wireColor(livePath1)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                <path d="M 40 65 L 45 65" fill="none" stroke="${wireColor(livePath2)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                <path d="${midPath1}" fill="none" stroke="${wireColor(fp1)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                <path d="${midPath2}" fill="none" stroke="${wireColor(fp2)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                <path d="M 55 35 L 77 48" fill="none" stroke="${wireColor(fp1)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                <path d="M 55 65 L 77 52" fill="none" stroke="${wireColor(fp2)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              `}
+              <line x1="82" y1="50" x2="90" y2="50" stroke="${wireColor(isLightOn)}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <div class="switch-group">
+              <div class="rocker normal" onclick="toggleSw1()">
+                <div class="rocker-inner ${sw1 === 0 ? 'up' : 'down'}">
+                  <div class="rocker-line"></div><div class="rocker-line"></div>
+                </div>
+              </div>
+              <span class="switch-label">Přepínač 1</span>
+            </div>
+            ${mode === 7 ? `
+              <div class="switch-group">
+                <div class="rocker cross" onclick="toggleSwMid()">
+                  <div class="rocker-inner ${swMid === 0 ? 'up' : 'down'}">
+                    <div class="rocker-line"></div><div class="rocker-line"></div>
+                  </div>
+                </div>
+                <span class="switch-label cross">Křížový</span>
+              </div>
+            ` : ''}
+            <div class="switch-group">
+              <div class="rocker normal" onclick="toggleSw2()">
+                <div class="rocker-inner ${sw2 === 0 ? 'up' : 'down'}">
+                  <div class="rocker-line"></div><div class="rocker-line"></div>
+                </div>
+              </div>
+              <span class="switch-label">Přepínač 2</span>
+            </div>
+            <div class="bulb-group">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="${isLightOn ? '#facc15' : 'none'}" stroke="${isLightOn ? '#854d0e' : '#94a3b8'}" stroke-width="2">
+                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>
+              </svg>
+              <span class="bulb-status ${isLightOn ? 'on' : 'off'}">${isLightOn ? 'SVÍTÍ' : 'VYPNUTO'}</span>
+            </div>
+          </div>
+          <div class="note">
+            <h3>Poznámka pro výuku: Proudová cesta</h3>
+            <p>V tomto zobrazení vidíme čistou logiku. Oranžová barva znázorňuje <strong>fázový vodič (L)</strong> pod napětím. Studenti by měli sledovat, jak přepnutí kontaktu u kteréhokoli vypínače změní cestu fáze a uzavře nebo rozpojí obvod ke svítidlu.</p>
+          </div>
+        </div>`;
+            } else {
+                html += renderTest();
+            }
+
+            html += `<div class="footer">Učební obor Elektrikář • Technologie elektroinstalace • 2026</div>`;
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function renderTest() {
+            const { currentQ, score, showResult, feedback } = state;
+            if (showResult) {
+                const pct = Math.round((score / QUESTIONS.length) * 100);
+                return `<div class="test-area"><div class="result">
+          <h2>Výsledek testu</h2>
+          <div class="score">${pct}%</div>
+          <button class="retry-btn" onclick="resetTest()">Zkusit znovu</button>
+        </div></div>`;
+            }
+            const q = QUESTIONS[currentQ];
+            let optionsHtml = q.options.map((opt, i) => {
+                let cls = 'option-btn';
+                if (feedback !== null) {
+                    if (i === q.correct) cls += ' correct';
+                    else if (i === feedback.selected) cls += ' wrong';
+                    else cls += ' faded';
+                }
+                return `<button class="${cls}" onclick="handleAnswer(${i})" ${feedback !== null ? 'disabled' : ''}>${opt}</button>`;
+            }).join('');
+            let feedbackHtml = '';
+            if (feedback !== null) {
+                const btnText = currentQ < QUESTIONS.length - 1 ? 'DALŠÍ OTÁZKA' : 'ZOBRAZIT VÝSLEDEK';
+                feedbackHtml = `<div class="feedback">
+          <p>${q.explanation}</p>
+          <button class="next-btn" onclick="nextQuestion()">${btnText}</button>
+        </div>`;
+            }
+            return `<div class="test-area"><div class="test-card">
+        <div class="test-meta">Test znalostí: Otázka ${currentQ + 1} / ${QUESTIONS.length}</div>
+        <div class="test-question">${q.text}</div>
+        <div class="test-diagram">${getDiagramSVG(q.diag)}</div>
+        ${optionsHtml}
+        ${feedbackHtml}
+      </div></div>`;
+        }
+
+        // Event handlers
+        function setTab(t) { state.tab = t; render(); }
+        function setMode(m) { state.mode = m; render(); }
+        function toggleBreaker() { state.breaker = !state.breaker; render(); }
+        function toggleSw1() { state.sw1 = state.sw1 === 0 ? 1 : 0; render(); }
+        function toggleSw2() { state.sw2 = state.sw2 === 0 ? 1 : 0; render(); }
+        function toggleSwMid() { state.swMid = state.swMid === 0 ? 1 : 0; render(); }
+        function handleAnswer(idx) {
+            if (state.feedback !== null) return;
+            const correct = idx === QUESTIONS[state.currentQ].correct;
+            if (correct) state.score++;
+            state.feedback = { correct, selected: idx };
+            render();
+        }
+        function nextQuestion() {
+            state.feedback = null;
+            if (state.currentQ < QUESTIONS.length - 1) state.currentQ++;
+            else state.showResult = true;
+            render();
+        }
+        function resetTest() {
+            state.currentQ = 0; state.score = 0; state.showResult = false; state.feedback = null;
+            render();
+        }
+
+        render();
+    </script>
+</body>
+
+</html>
