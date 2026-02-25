@@ -5,9 +5,9 @@
       "name": "Simulátor Elektroinstalace",
       "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
       "icon": "💡",
-      "created": "2026-02-25",
       "folder": "react-example",
-      "isBuilt": true
+      "isBuilt": true,
+      "created": "2026-02-25"
     }
   ]
 }
