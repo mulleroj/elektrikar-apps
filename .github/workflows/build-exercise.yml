@@ -3,17 +3,19 @@ name: Process App ZIP
 on:
   push:
     paths:
-      - 'uploads/*.zip'
+      - "uploads/*.zip"
   workflow_dispatch:
     inputs:
       zip_name:
-        description: 'Name of the ZIP file in uploads folder'
+        description: "Name of the ZIP file in uploads folder"
         required: true
 
 jobs:
   build-exercise:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,8 +25,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -47,7 +49,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add exercises/
           git add uploads/
-          
+
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
