@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tranzistor jako spínač - Simulátor</title>
+    <style>
+        :root {
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --blue-800: #1e40af;
+            --blue-900: #1e3a8a;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-900);
+            padding: 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background: var(--blue-800);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 16px;
+            border-bottom: 4px solid var(--blue-900);
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(30, 64, 175, 0.3);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        header .subtitle {
+            color: #93c5fd;
+            font-size: 0.75rem;
+            margin-top: 2px;
+        }
+
+        header .flex {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header .icon {
+            font-size: 1.8rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--slate-200);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--slate-700);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card h2 .icon {
+            color: var(--blue-600);
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Circuit diagram */
+        .circuit-box {
+            background: var(--slate-50);
+            border: 2px dashed var(--slate-200);
+            border-radius: 12px;
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .led-glow {
+            position: absolute;
+            top: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #facc15;
+            filter: blur(40px);
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        /* Slider */
+        .slider-group {
+            background: var(--slate-50);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--slate-100);
+            margin-bottom: 12px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .slider-label span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--slate-600);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .slider-value {
+            background: var(--blue-600);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--slate-200);
+            border-radius: 4px;
+            cursor: pointer;
+            accent-color: var(--blue-600);
+        }
+
+        /* Status badge */
+        .status-badge {
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border: 2px solid;
+            transition: all 0.3s;
+        }
+
+        .status-off {
+            background: #f3f4f6;
+            color: #374151;
+            border-color: #9ca3af;
+        }
+
+        .status-linear {
+            background: #fef9c3;
+            color: #854d0e;
+            border-color: #facc15;
+        }
+
+        .status-saturated {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #4ade80;
+        }
+
+        /* Values grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .val-card {
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--slate-100);
+            background: var(--slate-50);
+        }
+
+        .val-card.blue {
+            background: #eff6ff80;
+            border-color: #bfdbfe;
+        }
+
+        .val-card .label {
+            font-size: 0.65rem;
+            color: var(--slate-500);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .val-card .value {
+            font-size: 1.2rem;
+            font-family: monospace;
+            font-weight: 800;
+            color: var(--blue-700);
+        }
+
+        .val-card .formula {
+            font-size: 0.6rem;
+            color: #60a5fa;
+            margin-top: 4px;
+            font-style: italic;
+            font-family: monospace;
+        }
+
+        .val-card.span-2 {
+            grid-column: span 2;
+        }
+
+        /* Config inputs */
+        .config-group {
+            border-top: 1px solid var(--slate-100);
+            padding-top: 16px;
+            margin-top: 16px;
+        }
+
+        .config-group h3 {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--slate-400);
+            margin-bottom: 12px;
+        }
+
+        .config-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--slate-50);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--slate-100);
+            margin-bottom: 8px;
+        }
+
+        .config-row label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--slate-600);
+        }
+
+        .config-row .hint {
+            font-size: 0.6rem;
+            color: var(--slate-400);
+            font-style: italic;
+        }
+
+        .config-row input[type="number"] {
+            width: 80px;
+            padding: 4px 8px;
+            border: 1px solid var(--slate-200);
+            border-radius: 6px;
+            text-align: right;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .config-row .unit {
+            font-size: 0.75rem;
+            color: var(--slate-400);
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
+        /* Chart */
+        .chart-box {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-100);
+            border-radius: 12px;
+            padding: 16px;
+            flex-grow: 1;
+        }
+
+        .chart-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--slate-400);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        canvas#vceChart {
+            width: 100%;
+            height: 180px;
+            cursor: crosshair;
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+            margin-top: 8px;
+        }
+
+        .chart-labels span {
+            font-size: 0.6rem;
+            color: var(--slate-400);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .chart-info {
+            margin-top: 12px;
+            padding: 12px;
+            background: #eff6ff30;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe50;
+            font-size: 0.7rem;
+            color: var(--slate-600);
+            line-height: 1.6;
+        }
+
+        /* Info panel */
+        .grid-info {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .safety-card {
+            background: #fff7ed;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #fed7aa;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .safety-card h2 {
+            color: #9a3412;
+            margin-bottom: 16px;
+        }
+
+        .safety-card ul {
+            list-style: none;
+        }
+
+        .safety-card li {
+            font-size: 0.8rem;
+            color: #7c2d12;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .safety-card li .bullet {
+            color: #f97316;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .method-box {
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .method-box.blue {
+            background: #eff6ff80;
+            border: 1px solid #bfdbfe;
+        }
+
+        .method-box.green {
+            background: #f0fdf480;
+            border: 1px solid #bbf7d0;
+        }
+
+        .method-box h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .method-box.blue h4 {
+            color: #1e40af;
+        }
+
+        .method-box.green h4 {
+            color: #166534;
+        }
+
+        .method-box p {
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        /* Quiz */
+        .quiz-center {
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .quiz-icon {
+            width: 64px;
+            height: 64px;
+            background: #eff6ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 1.5rem;
+        }
+
+        .quiz-center h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--slate-800);
+        }
+
+        .quiz-center p {
+            font-size: 0.85rem;
+            color: var(--slate-500);
+            max-width: 400px;
+            margin: 8px auto 0;
+        }
+
+        .btn-primary {
+            background: var(--blue-600);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px -3px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-700);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--slate-100);
+            color: var(--slate-700);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--slate-200);
+        }
+
+        .quiz-question {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--slate-800);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .quiz-counter {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--slate-200);
+            background: white;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--slate-700);
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover:not(:disabled) {
+            border-color: #60a5fa;
+            background: #eff6ff30;
+        }
+
+        .quiz-option.correct {
+            background: #f0fdf4;
+            border-color: #22c55e;
+            color: #166534;
+        }
+
+        .quiz-option.wrong {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .quiz-option.faded {
+            background: white;
+            border-color: var(--slate-100);
+            color: var(--slate-400);
+        }
+
+        .quiz-explanation {
+            background: var(--slate-50);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--slate-200);
+            margin-top: 16px;
+            animation: fadeIn 0.3s;
+        }
+
+        .quiz-explanation .label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--slate-400);
+            margin-bottom: 8px;
+        }
+
+        .quiz-explanation p {
+            font-size: 0.85rem;
+            color: var(--slate-600);
+            line-height: 1.6;
+        }
+
+        .quiz-score {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--blue-600);
+            margin: 8px 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .note {
+            font-size: 0.65rem;
+            color: var(--slate-400);
+            font-style: italic;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="flex">
+                <span class="icon">⚡</span>
+                <div>
+                    <h1>Tranzistor jako spínač</h1>
+                    <p class="subtitle">Interaktivní simulátor pro výuku</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid-2">
+            <!-- Left: Circuit diagram + controls -->
+            <div class="card">
+                <h2><span class="icon">⏻</span> Schéma zapojení</h2>
+                <div class="circuit-box">
+                    <div class="led-glow" id="ledGlow"></div>
+                    <svg viewBox="0 0 400 300" style="width:100%;height:100%;max-width:300px">
+                        <!-- VCC -->
+                        <line x1="200" y1="20" x2="200" y2="50" stroke="#334155" stroke-width="2" />
+                        <text x="180" y="15" font-size="10" font-weight="bold" fill="#dc2626" id="vccLabel">VCC
+                            (+12V)</text>
+                        <!-- Load RL -->
+                        <rect x="185" y="50" width="30" height="40" id="rlRect" fill="#cbd5e1" stroke="#334155"
+                            stroke-width="2" />
+                        <text x="225" y="75" font-size="10" fill="#64748b" id="rlLabel">RL (100Ω)</text>
+                        <!-- Transistor -->
+                        <circle cx="200" cy="150" r="40" fill="none" stroke="#334155" stroke-width="2" />
+                        <line x1="180" y1="130" x2="180" y2="170" stroke="#334155" stroke-width="4" />
+                        <line x1="180" y1="150" x2="140" y2="150" stroke="#334155" stroke-width="2" />
+                        <line x1="180" y1="140" x2="200" y2="110" stroke="#334155" stroke-width="2" />
+                        <line x1="200" y1="110" x2="200" y2="90" stroke="#334155" stroke-width="2" />
+                        <line x1="180" y1="160" x2="200" y2="190" stroke="#334155" stroke-width="2" />
+                        <polygon points="200,190 190,185 195,180" fill="#334155" />
+                        <line x1="200" y1="190" x2="200" y2="230" stroke="#334155" stroke-width="2" />
+                        <!-- GND -->
+                        <line x1="180" y1="230" x2="220" y2="230" stroke="#334155" stroke-width="2" />
+                        <line x1="185" y1="235" x2="215" y2="235" stroke="#334155" stroke-width="2" />
+                        <line x1="192" y1="240" x2="208" y2="240" stroke="#334155" stroke-width="2" />
+                        <!-- Labels -->
+                        <text x="125" y="145" font-size="10" font-weight="bold" fill="#2563eb">B</text>
+                        <text x="205" y="105" font-size="10" font-weight="bold" fill="#2563eb">C</text>
+                        <text x="205" y="205" font-size="10" font-weight="bold" fill="#2563eb">E</text>
+                        <!-- RB -->
+                        <rect x="80" y="140" width="40" height="20" fill="white" stroke="#334155" stroke-width="2" />
+                        <text x="85" y="135" font-size="10" fill="#64748b">RB</text>
+                        <line x1="80" y1="150" x2="40" y2="150" stroke="#334155" stroke-width="2" />
+                        <text x="10" y="155" font-size="12" font-weight="bold" fill="#2563eb">Vin</text>
+                    </svg>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Vstupní napětí (Vin)</span>
+                        <span class="slider-value" id="vinValue">0.0 V</span>
+                    </div>
+                    <input type="range" id="vinSlider" min="0" max="12" step="0.1" value="0">
+                </div>
+                <div class="status-badge status-off" id="statusBadge">Hrazení (Vypnuto)</div>
+            </div>
+
+            <!-- Right: Parameters + Chart -->
+            <div class="card" style="display:flex;flex-direction:column">
+                <h2><span class="icon">🔢</span> Technické parametry</h2>
+                <div class="values-grid">
+                    <div class="val-card blue">
+                        <div class="label">Proud bází (IB)</div>
+                        <div class="value" id="ibValue">0.00 <small>mA</small></div>
+                        <div class="formula">IB = (Vin - 0.7) / RB</div>
+                    </div>
+                    <div class="val-card blue">
+                        <div class="label">Proud IC</div>
+                        <div class="value" id="icValue">0.0 <small>mA</small></div>
+                        <div class="formula">IC = IB × hFE</div>
+                        <div style="font-size:0.6rem;color:var(--slate-500);font-weight:700;text-transform:uppercase;margin-top:2px"
+                            id="icMax">Max: 120.0 mA</div>
+                    </div>
+                    <div class="val-card">
+                        <div class="label">Napětí VCE</div>
+                        <div class="value" id="vceValue" style="color:var(--slate-700)">12.00 <small>V</small></div>
+                    </div>
+                    <div class="val-card">
+                        <div class="label">Napájecí VCC</div>
+                        <div class="value" id="vccValue" style="color:var(--slate-700)">12.0 <small>V</small></div>
+                    </div>
+                    <div class="val-card span-2">
+                        <div class="label">Zesílení (hFE)</div>
+                        <div class="value" id="hfeValue" style="color:var(--slate-700)">100</div>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-title">Závislost VCE na RL (kliknutím změníte RL)</div>
+                    <canvas id="vceChart" width="400" height="180"></canvas>
+                    <div class="chart-labels">
+                        <span>10 Ω</span>
+                        <span>Odpor zátěže (RL)</span>
+                        <span>1000 Ω</span>
+                    </div>
+                    <div class="chart-info">
+                        <strong>Vliv RL:</strong> Odpor zátěže určuje maximální možný proud kolektoru
+                        <code>IC,max = VCC / RL</code>. Čím je <strong>RL vyšší</strong>, tím menší proud stačí k tomu,
+                        aby se tranzistor plně sepnul.
+                    </div>
+                </div>
+                <div class="config-group">
+                    <h3>Konfigurace komponent</h3>
+                    <div class="config-row">
+                        <div>
+                            <label>Odpor RB (báze)</label><br>
+                            <span class="hint">Omezuje proud IB</span>
+                        </div>
+                        <div style="display:flex;align-items:center">
+                            <input type="number" id="rbInput" value="1000">
+                            <span class="unit">Ω</span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Napětí VCC (zdroj)</label>
+                        <div style="display:flex;align-items:center">
+                            <input type="number" id="vccInput" value="12">
+                            <span class="unit">V</span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Odpor RL (zátěž)</label>
+                        <div style="display:flex;align-items:center">
+                            <input type="number" id="rlInput" value="100">
+                            <span class="unit">Ω</span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Beta zesílení (hFE)</label>
+                        <div style="display:flex;align-items:center">
+                            <input type="number" id="hfeInput" value="100">
+                        </div>
+                    </div>
+                    <p class="note">* Změna RL ovlivňuje maximální proud kolektoru a tím i bod, kdy tranzistor přechází
+                        do saturace (VCE ≈ 0.2V).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info panel -->
+        <div class="grid-info">
+            <div class="card">
+                <h2><span class="icon">ℹ️</span> Metodika pro výuku</h2>
+                <p style="font-size:0.85rem;color:var(--slate-600);line-height:1.7">
+                    Cílem spínacího režimu je, aby na tranzistoru byl v sepnutém stavu co nejmenší úbytek napětí.
+                    Tím se minimalizuje ztrátový výkon <strong>P = UCE × IC</strong> a tranzistor se nehřeje.
+                </p>
+                <div class="method-grid">
+                    <div class="method-box blue">
+                        <h4>➡️ Uzavření</h4>
+                        <p>Vin &lt; 0.7V. Tranzistor nevede. Zátěž je bez proudu.</p>
+                    </div>
+                    <div class="method-box green">
+                        <h4>➡️ Saturace</h4>
+                        <p>Báze je "přeplněna" proudem. Tranzistor je plně vodivý.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="safety-card">
+                <h2
+                    style="font-size:0.95rem;font-weight:800;text-transform:uppercase;letter-spacing:0.02em;display:flex;align-items:center;gap:8px">
+                    ⚠️ Bezpečnost
+                </h2>
+                <ul>
+                    <li><span class="bullet">•</span><span><strong>Žádná báze "na přímo":</strong> Vždy použijte bázový
+                            odpor RB k omezení proudu.</span></li>
+                    <li><span class="bullet">•</span><span><strong>Teplo v lineární oblasti:</strong> Pokud tranzistor
+                            není v saturaci, hrozí tepelný průraz.</span></li>
+                    <li><span class="bullet">•</span><span><strong>Indukční špičky:</strong> Při spínání cívek je nutná
+                            dioda antiparalelně k zátěži.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Quiz -->
+        <div class="card" id="quizCard">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+                <h2 style="margin-bottom:0"><span class="icon">❓</span> Test znalostí</h2>
+                <span class="quiz-counter" id="quizCounter"></span>
+            </div>
+            <div id="quizContent">
+                <div class="quiz-center">
+                    <div class="quiz-icon">❓</div>
+                    <h3>Jste připraveni na test?</h3>
+                    <p>Prověřte své znalosti o tranzistoru v režimu spínače. Test obsahuje 5 náhodně vybraných otázek z
+                        celkového fondu 20 otázek.</p>
+                    <button class="btn-primary" onclick="startQuiz()">Spustit test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Quiz Questions =====
+        const QUIZ_QUESTIONS = [
+            { question: "Kdy je tranzistor v režimu 'Hrazení' (vypnuto)?", options: ["Když je Vin větší než 0.7V", "Když je Vin menší než 0.7V", "Když je proud kolektoru maximální", "Když je odpor RL nulový"], correct: 1, explanation: "Tranzistor NPN začíná vést až po překonání napětí PN přechodu báze-emitor, což je typicky 0.7V." },
+            { question: "Jaký je hlavní účel odporu RB?", options: ["Zvyšuje napětí VCC", "Omezuje proud kolektoru IC", "Omezuje proud bází IB a chrání tranzistor", "Slouží jako zátěž obvodu"], correct: 2, explanation: "Bez odporu RB by do báze tekl nekontrolovaný proud, který by mohl tranzistor zničit." },
+            { question: "Co se stane s napětím VCE, když se tranzistor dostane do saturace?", options: ["Vzroste na hodnotu VCC", "Klesne k minimální hodnotě (cca 0.2V)", "Zůstane přesně na 0.7V", "Bude se rovnat napětí Vin"], correct: 1, explanation: "V saturaci je tranzistor plně sepnut a chová se téměř jako ideální vodič s minimálním úbytkem napětí." },
+            { question: "Jak ovlivní zvýšení odporu zátěže RL bod saturace?", options: ["Tranzistor saturuje dříve (při menším proudu báze)", "Tranzistor saturuje později (vyžaduje větší Vin)", "Zvýšení RL nemá na saturaci žádný vliv", "Tranzistor se v saturaci více zahřívá"], correct: 0, explanation: "Vyšší RL omezuje maximální IC. Menší IC znamená, že k dosažení saturace stačí menší proud báze." },
+            { question: "Proč je nebezpečné provozovat tranzistor jako spínač v lineární oblasti?", options: ["Protože tranzistor vůbec nevede proud", "Protože je napětí VCE příliš nízké", "Protože vzniká velký ztrátový výkon (teplo) na tranzistoru", "Protože se tím poškozuje zátěž RL"], correct: 2, explanation: "V lineární oblasti je na tranzistoru současně napětí i proud, což vytváří teplo (P = UCE * IC)." },
+            { question: "Jaký je vztah mezi proudy tranzistoru?", options: ["IE = IC + IB", "IC = IE + IB", "IB = IC + IE", "IE = IC * IB"], correct: 0, explanation: "Proud emitoru je součtem proudu kolektoru a proudu báze (podle 1. Kirchhoffova zákona)." },
+            { question: "Co označuje zkratka hFE (nebo beta)?", options: ["Vstupní odpor tranzistoru", "Stejnosměrný proudový zesilovací činitel", "Maximální napětí kolektoru", "Rychlost spínání tranzistoru"], correct: 1, explanation: "hFE udává, kolikrát je proud kolektoru větší než proud báze v lineární oblasti." },
+            { question: "Proč se používá dioda antiparalelně k indukční zátěži?", options: ["Aby se zvýšil proud zátěží", "Aby se tranzistor rychleji sepnul", "K ochraně tranzistoru před napěťovými špičkami při vypnutí", "K omezení proudu báze"], correct: 2, explanation: "Při vypnutí indukční zátěže vzniká vysoké indukované napětí opačné polarity, které by mohlo prorazit tranzistor." },
+            { question: "V jakém stavu se tranzistor chová jako rozpojený spínač?", options: ["V saturaci", "V lineární oblasti", "V režimu hrazení (cut-off)", "Při Vin = 5V"], correct: 2, explanation: "V režimu hrazení neteče bází žádný proud, tranzistor je nevodivý." },
+            { question: "Jaká je typická hodnota napětí VBE v saturaci u křemíkového tranzistoru?", options: ["0.2 V", "0.7 až 0.9 V", "12 V", "0 V"], correct: 1, explanation: "Napětí mezi bází a emitorem je v sepnutém stavu dáno úbytkem na PN přechodu, cca 0.7V." },
+            { question: "Co se stane, pokud budeme tranzistor v saturaci budit ještě větším proudem IB?", options: ["Proud IC se výrazně zvýší", "Napětí VCE klesne na nulu", "Proud IC se již téměř nezmění (zůstane na maximu)", "Tranzistor se okamžitě vypne"], correct: 2, explanation: "V saturaci je IC limitován odporem zátěže a napětím VCC. Další zvyšování IB už IC nezvýší." },
+            { question: "Jaká je hlavní výhoda tranzistoru oproti mechanickému spínači?", options: ["Větší rozměry", "Vysoká rychlost spínání a absence pohyblivých částí", "Nulový úbytek napětí v sepnutém stavu", "Jednodušší zapojení bez odporů"], correct: 1, explanation: "Tranzistory mohou spínat milionykrát za sekundu a neopotřebovávají se mechanicky." },
+            { question: "Co znamená označení NPN?", options: ["Napětí-Proud-Napětí", "Struktura polovodičů: Negativní-Pozitivní-Negativní", "Název výrobce tranzistoru", "Nízký-Průměrný-Nízký zisk"], correct: 1, explanation: "Označuje vrstvy polovodiče typu N (kolektor), P (báze) a N (emitor)." },
+            { question: "Který vývod tranzistoru je u NPN připojen na GND?", options: ["Báze", "Kolektor", "Emitor", "Žádný"], correct: 2, explanation: "V základním zapojení NPN spínače je emitor připojen přímo na záporný pól (GND)." },
+            { question: "Jaký je ztrátový výkon na tranzistoru v ideálním stavu saturace?", options: ["Maximální možný", "Velmi malý (díky nízkému VCE)", "Nulový", "Stejný jako na zátěži"], correct: 1, explanation: "Protože P = U * I a napětí VCE je v saturaci velmi malé (cca 0.2V), je i ztrátový výkon nízký." },
+            { question: "Co se stane s proudem IC, pokud se přeruší přívod do báze?", options: ["IC se zvýší na maximum", "IC klesne na nulu (tranzistor zavře)", "IC zůstane stejný", "Tranzistor se zničí"], correct: 1, explanation: "Bez proudu báze tranzistor nevede, tedy IC zanikne." },
+            { question: "Jak ovlivňuje teplota proudový zisk hFE?", options: ["Zisk se s teplotou nemění", "Zisk se s rostoucí teplotou obvykle zvyšuje", "Zisk s teplotou klesá k nule", "Teplota ovlivňuje pouze napětí VCC"], correct: 1, explanation: "U většiny bipolárních tranzistorů proudový zisk s teplotou mírně roste." },
+            { question: "K čemu slouží chladič u výkonových tranzistorů?", options: ["Ke zvýšení napětí Vin", "K odvodu tepla vznikajícího ztrátovým výkonem", "Ke snížení odporu RL", "K dekoraci obvodu"], correct: 1, explanation: "Při spínání velkých proudů vzniká teplo, které je nutné odvést." },
+            { question: "Jaký je rozdíl mezi BJT a MOSFETem z hlediska řízení?", options: ["Žádný, oba se řídí proudem", "BJT se řídí proudem, MOSFET napětím", "BJT se řídí napětím, MOSFET proudem", "Oba se řídí pouze mechanicky"], correct: 1, explanation: "U BJT řídíme proud kolektoru proudem báze, u MOSFETu napětím na hradle." },
+            { question: "Co se stane, pokud je odpor RB příliš velký?", options: ["Tranzistor se zničí velkým proudem", "Tranzistor se nemusí plně otevřít (nedosáhne saturace)", "Zvýší se napětí VCC", "Zátěž RL shoří"], correct: 1, explanation: "Velký RB omezí proud báze natolik, že tranzistor zůstane v lineární oblasti." }
+        ];
+
+        // ===== State =====
+        let vin = 0, vcc = 12, rBase = 1000, rLoad = 100, hfe = 100;
+        let quizActive = [], quizIdx = 0, quizScore = 0, quizFeedback = false, quizSelected = null, quizDone = false;
+
+        // ===== DOM Elements =====
+        const $ = id => document.getElementById(id);
+
+        // ===== Simulation =====
+        function update() {
+            const iBase = Math.max(0, (vin - 0.7) / rBase);
+            const icIdeal = iBase * hfe;
+            const icMax = vcc / rLoad;
+            const icActual = Math.min(icIdeal, icMax);
+            const vCe = vin <= 0.7 ? vcc : Math.max(0.2, vcc - (icActual * rLoad));
+
+            // Update display
+            $('vinValue').textContent = vin.toFixed(1) + ' V';
+            $('ibValue').innerHTML = (iBase * 1000).toFixed(2) + ' <small>mA</small>';
+            $('icValue').innerHTML = (icActual * 1000).toFixed(1) + ' <small>mA</small>';
+            $('icMax').textContent = 'Max: ' + (icMax * 1000).toFixed(1) + ' mA';
+            $('vceValue').innerHTML = vCe.toFixed(2) + ' <small>V</small>';
+            $('vccValue').innerHTML = vcc.toFixed(1) + ' <small>V</small>';
+            $('hfeValue').textContent = hfe;
+            $('vccLabel').textContent = 'VCC (+' + vcc + 'V)';
+            $('rlLabel').textContent = 'RL (' + rLoad + 'Ω)';
+
+            // Status
+            const badge = $('statusBadge');
+            let ledOp = 0;
+            if (vin <= 0.7) {
+                badge.textContent = 'Hrazení (Vypnuto)';
+                badge.className = 'status-badge status-off';
+                $('rlRect').setAttribute('fill', '#cbd5e1');
+            } else if (icIdeal >= icMax) {
+                badge.textContent = 'Saturace (Plně sepnuto)';
+                badge.className = 'status-badge status-saturated';
+                ledOp = 1;
+                $('rlRect').setAttribute('fill', '#fbbf24');
+            } else {
+                badge.textContent = 'Lineární oblast (Zesilování)';
+                badge.className = 'status-badge status-linear';
+                ledOp = icActual / icMax;
+                $('rlRect').setAttribute('fill', '#cbd5e1');
+            }
+            $('ledGlow').style.opacity = ledOp * 0.5;
+
+            drawChart(vCe);
+        }
+
+        // ===== Chart =====
+        function drawChart(currentVCE) {
+            const canvas = $('vceChart');
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            // Grid
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for (let y = 0; y <= 12; y += 2) {
+                const py = H - (y / 12) * H;
+                ctx.beginPath();
+                ctx.setLineDash([3, 3]);
+                ctx.moveTo(0, py); ctx.lineTo(W, py);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+
+            // Y-axis labels
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px monospace';
+            ctx.textAlign = 'right';
+            for (let y = 0; y <= 12; y += 4) {
+                ctx.fillText(y + 'V', 28, H - (y / 12) * H + 4);
+            }
+
+            // Curve
+            const iBase = Math.max(0, (vin - 0.7) / rBase);
+            const icIdeal = iBase * hfe;
+            ctx.beginPath();
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            for (let rl = 10; rl <= 1000; rl += 5) {
+                const icMax = vcc / rl;
+                const icActual = Math.min(icIdeal, icMax);
+                const vceVal = vin <= 0.7 ? vcc : Math.max(0.2, vcc - (icActual * rl));
+                const x = ((rl - 10) / 990) * (W - 36) + 36;
+                const y = H - (vceVal / 12) * H;
+                if (rl === 10) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Current RL marker
+            const rlX = ((rLoad - 10) / 990) * (W - 36) + 36;
+            const vceY = H - (currentVCE / 12) * H;
+
+            // Reference lines
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(); ctx.moveTo(rlX, 0); ctx.lineTo(rlX, H); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, vceY); ctx.lineTo(W, vceY); ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Labels
+            ctx.fillStyle = '#ef4444';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('RL=' + rLoad + 'Ω', rlX, 12);
+            ctx.textAlign = 'right';
+            ctx.fillText('VCE=' + currentVCE.toFixed(2) + 'V', W - 4, vceY - 6);
+
+            // Dot
+            ctx.beginPath();
+            ctx.arc(rlX, vceY, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#ef4444';
+            ctx.fill();
+        }
+
+        // Chart click -> change RL
+        $('vceChart').addEventListener('click', function (e) {
+            const rect = this.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const rl = Math.round(10 + x * 990);
+            rLoad = Math.max(10, Math.min(1000, rl));
+            $('rlInput').value = rLoad;
+            update();
+        });
+
+        // ===== Input Bindings =====
+        $('vinSlider').addEventListener('input', e => { vin = parseFloat(e.target.value); update(); });
+        $('rbInput').addEventListener('input', e => { rBase = Math.max(1, Number(e.target.value)); update(); });
+        $('vccInput').addEventListener('input', e => { vcc = Math.max(0.1, Number(e.target.value)); update(); });
+        $('rlInput').addEventListener('input', e => { rLoad = Math.max(1, Number(e.target.value)); update(); });
+        $('hfeInput').addEventListener('input', e => { hfe = Math.max(1, Number(e.target.value)); update(); });
+
+        // ===== Quiz =====
+        function startQuiz() {
+            const shuffled = [...QUIZ_QUESTIONS].sort(() => 0.5 - Math.random());
+            quizActive = shuffled.slice(0, 5);
+            quizIdx = 0; quizScore = 0; quizFeedback = false; quizSelected = null; quizDone = false;
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const content = $('quizContent');
+            const counter = $('quizCounter');
+
+            if (!quizActive.length) {
+                counter.textContent = '';
+                content.innerHTML = `
+          <div class="quiz-center">
+            <div class="quiz-icon">❓</div>
+            <h3>Jste připraveni na test?</h3>
+            <p>Prověřte své znalosti o tranzistoru v režimu spínače. Test obsahuje 5 náhodně vybraných otázek z celkového fondu 20 otázek.</p>
+            <button class="btn-primary" onclick="startQuiz()">Spustit test</button>
+          </div>`;
+                return;
+            }
+
+            if (quizDone) {
+                counter.textContent = '';
+                const msg = quizScore === quizActive.length
+                    ? "Gratulujeme! Jste expertem na tranzistorové spínače."
+                    : quizScore >= 3
+                        ? "Dobrá práce! Máte solidní základy, ale některé detaily by stálo za to zopakovat."
+                        : "Zkuste si simulaci ještě jednou projít a sledovat, jak se mění parametry při saturaci.";
+                content.innerHTML = `
+          <div class="quiz-center">
+            <div class="quiz-icon" style="background:#f0fdf4">✅</div>
+            <h3>Test dokončen!</h3>
+            <p style="margin-bottom:0">Vaše skóre je:</p>
+            <div class="quiz-score">${quizScore} / ${quizActive.length}</div>
+            <p style="font-style:italic">${msg}</p>
+            <button class="btn-secondary" onclick="resetQuiz()">🔄 Zkusit znovu</button>
+          </div>`;
+                return;
+            }
+
+            const q = quizActive[quizIdx];
+            counter.textContent = `Otázka ${quizIdx + 1} z ${quizActive.length}`;
+
+            let optionsHtml = q.options.map((opt, i) => {
+                let cls = 'quiz-option';
+                if (quizFeedback) {
+                    if (i === q.correct) cls += ' correct';
+                    else if (i === quizSelected) cls += ' wrong';
+                    else cls += ' faded';
+                }
+                return `<button class="${cls}" ${quizFeedback ? 'disabled' : ''} onclick="handleAnswer(${i})">${opt}${quizFeedback && i === q.correct ? ' ✅' : ''}</button>`;
+            }).join('');
+
+            let feedbackHtml = '';
+            if (quizFeedback) {
+                const btnText = quizIdx === quizActive.length - 1 ? 'Dokončit test' : 'Další otázka ➡️';
+                feedbackHtml = `
+          <div class="quiz-explanation">
+            <div class="label">Vysvětlení</div>
+            <p>${q.explanation}</p>
+            <button class="btn-primary" style="width:100%;margin-top:12px" onclick="nextQuestion()">${btnText}</button>
+          </div>`;
+            }
+
+            content.innerHTML = `
+        <div class="quiz-question">${q.question}</div>
+        ${optionsHtml}
+        ${feedbackHtml}`;
+        }
+
+        function handleAnswer(idx) {
+            if (quizFeedback) return;
+            quizSelected = idx;
+            quizFeedback = true;
+            if (idx === quizActive[quizIdx].correct) quizScore++;
+            renderQuiz();
+        }
+
+        function nextQuestion() {
+            if (quizIdx < quizActive.length - 1) {
+                quizIdx++;
+                quizFeedback = false;
+                quizSelected = null;
+                renderQuiz();
+            } else {
+                quizDone = true;
+                renderQuiz();
+            }
+        }
+
+        function resetQuiz() {
+            quizActive = [];
+            quizIdx = 0; quizScore = 0; quizFeedback = false; quizSelected = null; quizDone = false;
+            renderQuiz();
+        }
+
+        // Init
+        update();
+    </script>
+</body>
+
+</html>

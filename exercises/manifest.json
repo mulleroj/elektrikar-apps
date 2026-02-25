@@ -1,3 +1,13 @@
 {
-  "exercises": []
+  "exercises": [
+    {
+      "id": "tranzistor-jako-spinac",
+      "name": "Tranzistor jako spínač - Simulátor",
+      "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
+      "icon": "⚡",
+      "created": "2026-02-25",
+      "folder": "tranzistor-jako-spinac",
+      "isBuilt": true
+    }
+  ]
 }
