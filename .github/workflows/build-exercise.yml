@@ -22,26 +22,125 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Find and process ZIP files
+      - name: Process ZIP files
         run: |
-          # Find all ZIP files in uploads folder
+          shopt -s nullglob
+          processed=false
+
           for zip_file in uploads/*.zip; do
-            if [ -f "$zip_file" ]; then
-              echo "Processing: $zip_file"
-              node scripts/build-exercise.js "$zip_file"
-              # Remove processed ZIP
-              rm "$zip_file"
+            echo "📦 Processing: $zip_file"
+            
+            # Get exercise name from filename (sanitize)
+            basename=$(basename "$zip_file" .zip)
+            safename=$(echo "$basename" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g; s/--*/-/g; s/^-//; s/-$//')
+            
+            echo "📋 Exercise name: $safename"
+            
+            # Create temp directory and extract
+            tmpdir=$(mktemp -d)
+            unzip -o "$zip_file" -d "$tmpdir"
+            
+            # Find the actual project root (handle ZIP with single subdirectory)
+            entries=($(ls -1 "$tmpdir" | grep -v '^\.' ))
+            if [ ${#entries[@]} -eq 1 ] && [ -d "$tmpdir/${entries[0]}" ]; then
+              projectdir="$tmpdir/${entries[0]}"
+              echo "📁 Found subdirectory: ${entries[0]}"
+            else
+              projectdir="$tmpdir"
+            fi
+            
+            # Check for index.html
+            if [ ! -f "$projectdir/index.html" ]; then
+              # Try common subdirectories
+              for subdir in dist build out public; do
+                if [ -f "$projectdir/$subdir/index.html" ]; then
+                  projectdir="$projectdir/$subdir"
+                  echo "📁 Using subdirectory: $subdir"
+                  break
+                fi
+              done
+            fi
+            
+            if [ ! -f "$projectdir/index.html" ]; then
+              echo "❌ No index.html found in $basename, skipping"
+              rm -rf "$tmpdir"
+              continue
+            fi
+
+            # Validate index.html is not empty
+            if [ ! -s "$projectdir/index.html" ]; then
+              echo "❌ index.html is empty in $basename, skipping"
+              rm -rf "$tmpdir"
+              continue
+            fi
+            
+            echo "✅ Found valid index.html ($(wc -c < "$projectdir/index.html") bytes)"
+            
+            # Copy to exercises folder (remove node_modules, .git, etc.)
+            targetdir="exercises/$safename"
+            rm -rf "$targetdir"
+            mkdir -p "$targetdir"
+            
+            # Copy files, excluding unnecessary directories
+            rsync -a --exclude='node_modules' --exclude='.git' --exclude='.github' \
+                      --exclude='package-lock.json' --exclude='.env' \
+                      "$projectdir/" "$targetdir/"
+            
+            echo "📁 Copied to $targetdir"
+            
+            # Create/update meta.json
+            description=$(echo "$basename" | sed 's/-/ /g')
+            cat > "$targetdir/meta.json" <<EOF
+          {
+            "id": "$safename",
+            "name": "$basename",
+            "description": "$description",
+            "icon": "⚡",
+            "created": "$(date +%Y-%m-%d)",
+            "folder": "$safename",
+            "isBuilt": true
+          }
+          EOF
+            
+            # Remove processed ZIP
+            rm "$zip_file"
+            processed=true
+            echo "✅ Done: $safename"
+            echo ""
+          done
+
+          if [ "$processed" = false ]; then
+            echo "⚠️ No ZIP files found to process"
+          fi
+
+      - name: Update manifest
+        run: |
+          # Build manifest from meta.json files
+          echo '{"exercises":[' > exercises/manifest.json.tmp
+          first=true
+          for meta in exercises/*/meta.json; do
+            if [ -f "$meta" ]; then
+              if [ "$first" = false ]; then
+                echo ',' >> exercises/manifest.json.tmp
+              fi
+              cat "$meta" >> exercises/manifest.json.tmp
+              first=false
             fi
           done
+          echo ']}' >> exercises/manifest.json.tmp
+
+          # Pretty-print with python (available on ubuntu)
+          python3 -c "
+          import json, sys
+          with open('exercises/manifest.json.tmp') as f:
+              data = json.load(f)
+          with open('exercises/manifest.json', 'w') as f:
+              json.dump(data, f, indent=2, ensure_ascii=False)
+          "
+          rm exercises/manifest.json.tmp
+
+          echo "📋 Manifest updated:"
+          cat exercises/manifest.json
 
       - name: Commit built apps
         run: |
