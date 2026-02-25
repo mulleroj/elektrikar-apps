@@ -1,3 +1,13 @@
 {
-    "exercises": []
+  "exercises": [
+    {
+      "id": "built-react-example",
+      "name": "react-example",
+      "description": "Aplikace pro elektrikáře",
+      "icon": "⚡",
+      "created": "2026-02-25",
+      "folder": "react-example",
+      "isBuilt": true
+    }
+  ]
 }
