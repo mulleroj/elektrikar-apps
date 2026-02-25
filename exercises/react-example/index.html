@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulátor Elektroinstalace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+            padding: 16px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #0f172a;
+            padding: 24px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .tabs {
+            display: flex;
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .tab {
+            padding: 8px 20px;
+            border-radius: 6px;
+            border: none;
+            color: #fff;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .tab.active {
+            background: #2563eb;
+        }
+
+        .toolbar {
+            padding: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: #f8fafc;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .mode-btns {
+            display: flex;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .mode-btn {
+            padding: 6px 16px;
+            border: none;
+            background: #fff;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .mode-btn.active {
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .breaker {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .breaker.on {
+            background: #16a34a;
+            border-color: #15803d;
+        }
+
+        .breaker.off {
+            background: #dc2626;
+            border-color: #b91c1c;
+        }
+
+        .breaker-lever {
+            width: 16px;
+            height: 24px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            transition: transform 0.2s;
+        }
+
+        .breaker.on .breaker-lever {
+            transform: rotateX(35deg);
+        }
+
+        .breaker.off .breaker-lever {
+            transform: rotateX(-35deg);
+        }
+
+        .sim-area {
+            padding: 32px;
+        }
+
+        .circuit {
+            position: relative;
+            height: 260px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 16px;
+        }
+
+        .switch-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .switch-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .switch-label.cross {
+            color: #3b82f6;
+        }
+
+        .rocker {
+            width: 40px;
+            height: 56px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .rocker.normal {
+            background: #e2e8f0;
+        }
+
+        .rocker.cross {
+            background: #bfdbfe;
+        }
+
+        .rocker-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            border: 1px solid;
+            transition: transform 0.15s, box-shadow 0.15s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+
+        .rocker.normal .rocker-inner {
+            background: #fff;
+            border-color: #cbd5e1;
+        }
+
+        .rocker.cross .rocker-inner {
+            background: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+        .rocker-inner.up {
+            transform: perspective(200px) rotateX(25deg);
+            box-shadow: 0 4px 2px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .rocker-inner.down {
+            transform: perspective(200px) rotateX(-25deg);
+            box-shadow: 0 -4px 2px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        .rocker-line {
+            width: 12px;
+            height: 2px;
+            border-radius: 1px;
+        }
+
+        .rocker.normal .rocker-line {
+            background: #cbd5e1;
+        }
+
+        .rocker.cross .rocker-line {
+            background: #93c5fd;
+        }
+
+        .bulb-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+        }
+
+        .bulb-status {
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .bulb-status.on {
+            color: #ca8a04;
+        }
+
+        .bulb-status.off {
+            color: #94a3b8;
+        }
+
+        .circuit svg.wires {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wire-live {
+            stroke: #f97316;
+        }
+
+        .wire-dead {
+            stroke: #475569;
+        }
+
+        .note {
+            margin-top: 32px;
+            background: #0f172a;
+            padding: 24px;
+            border-radius: 12px;
+            color: #fff;
+        }
+
+        .note h3 {
+            color: #60a5fa;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .note p {
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .note strong {
+            color: #fff;
+        }
+
+        .test-area {
+            padding: 32px;
+        }
+
+        .test-card {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .test-meta {
+            font-size: 10px;
+            font-weight: 700;
+            color: #2563eb;
+            text-transform: uppercase;
+        }
+
+        .test-question {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .test-diagram {
+            margin: 20px 0;
+        }
+
+        .test-diagram svg {
+            width: 100%;
+            height: 120px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 14px 16px;
+            text-align: left;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #60a5fa;
+        }
+
+        .option-btn.correct {
+            background: #dcfce7;
+            border-color: #22c55e;
+        }
+
+        .option-btn.wrong {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+
+        .option-btn.faded {
+            opacity: 0.5;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 16px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feedback p {
+            font-size: 12px;
+            color: #64748b;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .result {
+            text-align: center;
+            padding: 48px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .result h2 {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+
+        .result .score {
+            font-size: 56px;
+            font-weight: 900;
+            color: #2563eb;
+            margin-bottom: 32px;
+        }
+
+        .retry-btn {
+            width: 100%;
+            padding: 16px;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .footer {
+            background: #f8fafc;
+            border-top: 1px solid #f1f5f9;
+            padding: 16px;
+            text-align: center;
+            font-size: 9px;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header h1 {
+                font-size: 15px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .circuit {
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="app"></div>
+    <script>
+    let state = { tab:'sim', mode:6, sw1:0, swMid:0, sw2:0, breaker:true, currentQ:0, score:0, showResult:false, feedback:null };
+    const QUESTIONS = [
+      { text:"Kolik svorek ma krizovy prepinac (Razeni 7)?", diag:'terminals', options:["2 svorky","3 svorky","4 svorky","5 svorek"], correct:2, explanation:"Krizovy prepinac ma 4 svorky." },
+      { text:"Jakou barvu ma nulovy vodic (N)?", diag:'wires', options:["Zelenozluta","Hneda","Cerna","Svetle modra"], correct:3, explanation:"Nulovy vodic je vzdy svetle modry." },
+      { text:"Ktere razeni je na schematu ovladani ze dvou mist?", diag:'twoswitches', options:["2x razeni 1","2x razeni 6","1x razeni 6 a 1x razeni 7","2x razeni 5"], correct:1, explanation:"Pro dve mista se pouzivaji dva stridave prepinace (razeni 6)." },
+      { text:"Ktery vodic smi byt prerusen vypinacem?", diag:'safety', options:["Modry (N)","Zelenozluty (PE)","Hnedy/Oranzovy (L)","Vsechny tri"], correct:2, explanation:"Vypinacem se vzdy prerusuje pouze faze (L)." },
+      { text:"Jaky nastroj je nejvhodnejsi pro odplasteni kabelu CYKY?", diag:'stripper', options:["Kuchynsky nuz","Kombinovane kleste","Noze na kabely (Jokari)","Plochy sroubovak"], correct:2, explanation:"Noze na kabely umoznuji nastavit hloubku rezu." },
+      { text:"Jakou hodnotu jistice B zvolite pro svetelny okruh 1.5 mm2?", diag:'breaker_diag', options:["B 6A","B 10A","B 16A","B 20A"], correct:1, explanation:"Pro svetelne okruhy s prurezem 1.5 mm2 se pouziva jistic 10A." },
+      { text:"Kde se u stridaveho prepinace zapojuje privodni faze?", diag:'terminals', options:["Na libovolnou svorku","Na spolecnou svorku (L)","Na korespondencni svorku","Nikam"], correct:1, explanation:"Privodni faze musi byt na spolecne svorce." },
+      { text:"Muze byt krizovy vypinac (razeni 7) pouzit jako prvni v rade?", diag:'terminals', options:["Ano","Ne, musi byt mezi razenim 6","Ano, ale svetlo bude blikat","Jen v prumyslu"], correct:1, explanation:"Krizovy vypinac se vklada vzdy mezi dva stridave prepinace." },
+      { text:"Jak se nazyvaji vodice propojujici dva prepinace razeni 6?", diag:'twoswitches', options:["Hlavni privody","Nulove vodice","Korespondencni vodice","Zemnici vodice"], correct:2, explanation:"Vodice prenasejici fazi mezi vypinaci jsou korespondencni vodice." },
+      { text:"Co znamena barevne znaceni Zelenozluta?", diag:'wires', options:["Fazovy vodic","Nulovy vodic","Ochranny vodic (PE)","Signalni vodic"], correct:2, explanation:"Zelenozluta barva je vyhrazena pro ochranny vodic PE." }
+    ];
+    function getDiagramSVG(type) {
+      var d = {
+        terminals:'<svg viewBox="0 0 200 100"><rect x="70" y="20" width="60" height="60" rx="4" fill="white" stroke="#334155" stroke-width="2"/><circle cx="85" cy="35" r="4" fill="#ef4444"/><circle cx="115" cy="35" r="4" fill="#ef4444"/><circle cx="100" cy="70" r="4" fill="#ef4444"/><text x="100" y="95" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="bold">SVORKY</text></svg>',
+        wires:'<svg viewBox="0 0 200 100"><rect x="40" y="40" width="120" height="20" rx="10" fill="#cbd5e1"/><circle cx="65" cy="50" r="6" fill="#92400e"/><circle cx="100" cy="50" r="6" fill="#2563eb"/><circle cx="135" cy="50" r="6" fill="#22c55e"/><text x="100" y="85" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="bold">KABEL CYKY-J</text></svg>',
+        twoswitches:'<svg viewBox="0 0 200 100"><rect x="30" y="35" width="30" height="30" fill="white" stroke="#334155" stroke-width="2"/><line x1="60" y1="45" x2="140" y2="45" stroke="#334155" stroke-width="2" stroke-dasharray="4"/><line x1="60" y1="55" x2="140" y2="55" stroke="#334155" stroke-width="2" stroke-dasharray="4"/><rect x="140" y="35" width="30" height="30" fill="white" stroke="#334155" stroke-width="2"/><text x="100" y="85" text-anchor="middle" font-size="10" fill="#94a3b8" font-weight="bold">SCHEMA</text></svg>',
+        safety:'<svg viewBox="0 0 200 100"><line x1="30" y1="30" x2="170" y2="30" stroke="#3b82f6" stroke-width="2"/><line x1="30" y1="50" x2="170" y2="50" stroke="#22c55e" stroke-width="2"/><line x1="30" y1="70" x2="170" y2="70" stroke="#f97316" stroke-width="2"/><rect x="90" y="62" width="20" height="15" fill="white" stroke="red" stroke-width="2"/><text x="20" y="35" font-size="10">N</text><text x="18" y="55" font-size="10">PE</text><text x="22" y="75" font-size="10">L</text></svg>',
+        stripper:'<svg viewBox="0 0 200 100"><path d="M50 70 L80 30 L150 30 L150 40 L85 40 L55 80 Z" fill="#ef4444"/><circle cx="120" cy="35" r="5" fill="#64748b"/></svg>',
+        breaker_diag:'<svg viewBox="0 0 200 100"><rect x="85" y="20" width="30" height="60" rx="2" fill="white" stroke="#334155" stroke-width="2"/><rect x="92" y="35" width="16" height="25" fill="#94a3b8"/><text x="100" y="52" text-anchor="middle" font-size="10" font-weight="bold">B10</text></svg>'
+      };
+      return d[type]||'';
+    }
+    function wireColor(v){return v?'#f97316':'#475569';}
+    function render(){
+      var s=state, lp1=s.breaker&&s.sw1===0, lp2=s.breaker&&s.sw1===1, fp1,fp2;
+      if(s.mode===7){fp1=s.swMid===0?lp1:lp2;fp2=s.swMid===0?lp2:lp1;}else{fp1=lp1;fp2=lp2;}
+      var lit=s.sw2===0?fp1:fp2;
+      var h='<div class="header"><h1>Simulator Elektroinstalace</h1><div class="tabs"><button class="tab '+(s.tab==='sim'?'active':'')+'" onclick="setTab(\'sim\')">Schema</button><button class="tab '+(s.tab==='test'?'active':'')+'" onclick="setTab(\'test\')">Test</button></div></div>';
+      h+='<div class="toolbar"><div style="display:flex;align-items:center;gap:12px"><span class="toolbar-label">Typ obvodu:</span><div class="mode-btns"><button class="mode-btn '+(s.mode===6?'active':'')+'" onclick="setMode(6)">Razeni 6</button><button class="mode-btn '+(s.mode===7?'active':'')+'" onclick="setMode(7)">Razeni 7</button></div></div><div style="display:flex;align-items:center;gap:12px"><span class="toolbar-label">Hlavni jistic:</span><div class="breaker '+(s.breaker?'on':'off')+'" onclick="toggleBreaker()"><div class="breaker-lever"></div></div></div></div>';
+      if(s.tab==='sim'){
+        var mp1=s.mode===7?(s.swMid===0?'M 45 35 L 55 35':'M 45 35 L 55 65'):'';
+        var mp2=s.mode===7?(s.swMid===0?'M 45 65 L 55 65':'M 45 65 L 55 35'):'';
+        h+='<div class="sim-area"><div class="circuit"><svg class="wires" viewBox="0 0 100 100" preserveAspectRatio="none">';
+        h+='<line x1="5" y1="50" x2="20" y2="50" stroke="'+wireColor(s.breaker)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+        h+='<path d="M 23 48 L 40 35" fill="none" stroke="'+wireColor(lp1)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+        h+='<path d="M 23 52 L 40 65" fill="none" stroke="'+wireColor(lp2)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+        if(s.mode===6){
+          h+='<path d="M 40 35 L 77 48" fill="none" stroke="'+wireColor(lp1)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+          h+='<path d="M 40 65 L 77 52" fill="none" stroke="'+wireColor(lp2)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+        }else{
+          h+='<path d="M 40 35 L 45 35" fill="none" stroke="'+wireColor(lp1)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+          h+='<path d="M 40 65 L 45 65" fill="none" stroke="'+wireColor(lp2)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+          h+='<path d="'+mp1+'" fill="none" stroke="'+wireColor(fp1)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+          h+='<path d="'+mp2+'" fill="none" stroke="'+wireColor(fp2)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+          h+='<path d="M 55 35 L 77 48" fill="none" stroke="'+wireColor(fp1)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+          h+='<path d="M 55 65 L 77 52" fill="none" stroke="'+wireColor(fp2)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+        }
+        h+='<line x1="82" y1="50" x2="90" y2="50" stroke="'+wireColor(lit)+'" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+        h+='</svg>';
+        h+='<div class="switch-group"><div class="rocker normal" onclick="toggleSw1()"><div class="rocker-inner '+(s.sw1===0?'up':'down')+'"><div class="rocker-line"></div><div class="rocker-line"></div></div></div><span class="switch-label">Prepinac 1</span></div>';
+        if(s.mode===7) h+='<div class="switch-group"><div class="rocker cross" onclick="toggleSwMid()"><div class="rocker-inner '+(s.swMid===0?'up':'down')+'"><div class="rocker-line"></div><div class="rocker-line"></div></div></div><span class="switch-label cross">Krizovy</span></div>';
+        h+='<div class="switch-group"><div class="rocker normal" onclick="toggleSw2()"><div class="rocker-inner '+(s.sw2===0?'up':'down')+'"><div class="rocker-line"></div><div class="rocker-line"></div></div></div><span class="switch-label">Prepinac 2</span></div>';
+        h+='<div class="bulb-group"><svg width="48" height="48" viewBox="0 0 24 24" fill="'+(lit?'#facc15':'none')+'" stroke="'+(lit?'#854d0e':'#94a3b8')+'" stroke-width="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg><span class="bulb-status '+(lit?'on':'off')+'">'+(lit?'SVITI':'VYPNUTO')+'</span></div>';
+        h+='</div>';
+        h+='<div class="note"><h3>Poznamka pro vyuku</h3><p>Oranzova barva znazornuje <strong>fazovy vodic (L)</strong> pod napetim. Sledujte, jak prepnuti kontaktu zmeni cestu faze.</p></div></div>';
+      }else{
+        if(s.showResult){
+          var pct=Math.round((s.score/QUESTIONS.length)*100);
+          h+='<div class="test-area"><div class="result"><h2>Vysledek testu</h2><div class="score">'+pct+'%</div><button class="retry-btn" onclick="resetTest()">Zkusit znovu</button></div></div>';
+        }else{
+          var q=QUESTIONS[s.currentQ];
+          h+='<div class="test-area"><div class="test-card"><div class="test-meta">Otazka '+(s.currentQ+1)+' / '+QUESTIONS.length+'</div><div class="test-question">'+q.text+'</div><div class="test-diagram">'+getDiagramSVG(q.diag)+'</div>';
+          for(var i=0;i<q.options.length;i++){
+            var cls='option-btn';
+            if(s.feedback!==null){if(i===q.correct)cls+=' correct';else if(i===s.feedback.selected)cls+=' wrong';else cls+=' faded';}
+            h+='<button class="'+cls+'" onclick="handleAnswer('+i+')" '+(s.feedback!==null?'disabled':'')+'>'+q.options[i]+'</button>';
+          }
+          if(s.feedback!==null){
+            h+='<div class="feedback"><p>'+q.explanation+'</p><button class="next-btn" onclick="nextQuestion()">'+(s.currentQ<QUESTIONS.length-1?'Dalsi otazka':'Zobrazit vysledek')+'</button></div>';
+          }
+          h+='</div></div>';
+        }
+      }
+      h+='<div class="footer">Ucebni obor Elektrikar 2026</div>';
+      document.getElementById('app').innerHTML=h;
+    }
+    function setTab(t){state.tab=t;render();}
+    function setMode(m){state.mode=m;render();}
+    function toggleBreaker(){state.breaker=!state.breaker;render();}
+    function toggleSw1(){state.sw1=state.sw1===0?1:0;render();}
+    function toggleSw2(){state.sw2=state.sw2===0?1:0;render();}
+    function toggleSwMid(){state.swMid=state.swMid===0?1:0;render();}
+    function handleAnswer(i){if(state.feedback!==null)return;var c=i===QUESTIONS[state.currentQ].correct;if(c)state.score++;state.feedback={correct:c,selected:i};render();}
+    function nextQuestion(){state.feedback=null;if(state.currentQ<QUESTIONS.length-1)state.currentQ++;else state.showResult=true;render();}
+    function resetTest(){state.currentQ=0;state.score=0;state.showResult=false;state.feedback=null;render();}
+    render();
+    </script>
+</body>
+
+</html>
