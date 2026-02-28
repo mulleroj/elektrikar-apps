@@ -1,6 +1,15 @@
 {
   "exercises": [
     {
+      "id": "elektro-lektor-asynchronn-stroje-1",
+      "name": "elektro-lektor--asynchronn--stroje--1-",
+      "description": "elektro lektor  asynchronn  stroje  1 ",
+      "icon": "⚡",
+      "created": "2026-02-28",
+      "folder": "elektro-lektor-asynchronn-stroje-1",
+      "isBuilt": true
+    },
+    {
       "id": "elektro-lektor-asynchronn-stroje",
       "name": "elektro-lektor--asynchronn--stroje",
       "description": "elektro lektor  asynchronn  stroje",
