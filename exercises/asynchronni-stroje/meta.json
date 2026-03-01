@@ -1,0 +1,9 @@
+{
+  "id": "asynchronni-stroje",
+  "name": "Asynchronní stroje",
+  "description": "Výuková aplikace pro asynchronní stroje",
+  "icon": "⚡",
+  "created": "2026-03-01",
+  "folder": "asynchronni-stroje",
+  "isBuilt": true
+}

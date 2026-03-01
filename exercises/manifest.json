@@ -1,21 +1,12 @@
 {
   "exercises": [
     {
-      "id": "elektro-lektor-asynchronn-stroje-3",
-      "name": "elektro-lektor--asynchronn--stroje--3-",
-      "description": "elektro lektor  asynchronn  stroje  3 ",
+      "id": "asynchronni-stroje",
+      "name": "Asynchronní stroje",
+      "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "⚡",
       "created": "2026-03-01",
-      "folder": "elektro-lektor-asynchronn-stroje-3",
-      "isBuilt": true
-    },
-    {
-      "id": "elektro-lektor-asynchronn-stroje-4",
-      "name": "elektro-lektor--asynchronn--stroje--4-",
-      "description": "elektro lektor  asynchronn  stroje  4 ",
-      "icon": "⚡",
-      "created": "2026-03-01",
-      "folder": "elektro-lektor-asynchronn-stroje-4",
+      "folder": "asynchronni-stroje",
       "isBuilt": true
     },
     {
