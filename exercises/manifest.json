@@ -10,6 +10,15 @@
       "isBuilt": true
     },
     {
+      "id": "dioda-interaktivn-pr-vodce",
+      "name": "dioda--interaktivn--pr-vodce",
+      "description": "dioda  interaktivn  pr vodce",
+      "icon": "⚡",
+      "created": "2026-03-04",
+      "folder": "dioda-interaktivn-pr-vodce",
+      "isBuilt": true
+    },
+    {
       "id": "react-example",
       "name": "Simulátor Elektroinstalace",
       "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
