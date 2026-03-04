@@ -1,0 +1,7 @@
+{
+    "id": "dioda",
+    "name": "Dioda: Interaktivní Průvodce",
+    "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
+    "type": "react",
+    "entryPoint": "index.html"
+}
