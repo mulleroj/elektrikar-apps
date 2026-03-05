@@ -1,44 +1,44 @@
-{
-  "exercises": [
-    {
-      "name": "Asynchronní stroje",
-      "description": "Výuková aplikace pro asynchronní stroje",
-      "icon": "🏗️",
-      "updated": "2026-03-04"
-    },
-    {
-      "id": "dioda",
-      "name": "Dioda: Interaktivní Průvodce",
-      "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
-      "type": "react",
-      "entryPoint": "index.html"
-    },
-    {
-      "id": "react-example",
-      "name": "Simulátor Elektroinstalace",
-      "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
-      "icon": "💡",
-      "created": "2026-02-24",
-      "folder": "react-example",
-      "isBuilt": true
-    },
-    {
-      "id": "synclab-v1-0",
-      "name": "synclab-v1.0",
-      "description": "synclab v1.0",
-      "icon": "⚡",
-      "created": "2026-03-05",
-      "folder": "synclab-v1-0",
-      "isBuilt": true
-    },
-    {
-      "id": "tranzistor-jako-spinac",
-      "name": "Tranzistor jako spínač - Simulátor",
-      "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
-      "icon": "⚡",
-      "created": "2026-02-25",
-      "folder": "tranzistor-jako-spinac",
-      "isBuilt": true
-    }
-  ]
+﻿{
+    "exercises":  [
+                      {
+                          "name":  "AsynchronnĂ­ stroje",
+                          "description":  "VĂ˝ukovĂˇ aplikace pro asynchronnĂ­ stroje",
+                          "icon":  "đźŹ—ď¸Ź",
+                          "updated":  "2026-03-04"
+                      },
+                      {
+                          "id":  "dioda",
+                          "name":  "Dioda: InteraktivnĂ­ PrĹŻvodce",
+                          "description":  "InteraktivnĂ­ vzdÄ›lĂˇvacĂ­ aplikace pro vĂ˝uku principĹŻ fungovĂˇnĂ­ diod, PN pĹ™echodu a usmÄ›rĹovĂˇnĂ­ proudu.",
+                          "type":  "react",
+                          "entryPoint":  "index.html"
+                      },
+                      {
+                          "id":  "react-example",
+                          "name":  "SimulĂˇtor Elektroinstalace",
+                          "description":  "InteraktivnĂ­ simulĂˇtor proudovĂ© cesty s pĹ™epĂ­naÄŤi Ĺ™azenĂ­ 6 a 7, jistiÄŤem a testem znalostĂ­.",
+                          "icon":  "đź’ˇ",
+                          "created":  "2026-02-24",
+                          "folder":  "react-example",
+                          "isBuilt":  true
+                      },
+                      {
+                          "id":  "synclab-v1-0",
+                          "name":  "SyncLab: SynchronnĂ­ stroje",
+                          "description":  "InteraktivnĂ­ simulĂˇtor synchronnĂ­ho stroje pro vĂ˝uku fĂˇzovĂˇnĂ­, synchronismu a porovnĂˇnĂ­ s asynchronnĂ­m strojem.",
+                          "icon":  "âšˇ",
+                          "created":  "2026-03-05",
+                          "folder":  "synclab-v1-0",
+                          "isBuilt":  true
+                      },
+                      {
+                          "id":  "tranzistor-jako-spinac",
+                          "name":  "Tranzistor jako spĂ­naÄŤ - SimulĂˇtor",
+                          "description":  "InteraktivnĂ­ simulĂˇtor tranzistoru v reĹľimu spĂ­naÄŤe pro vĂ˝uku elektroniky.",
+                          "icon":  "âšˇ",
+                          "created":  "2026-02-25",
+                          "folder":  "tranzistor-jako-spinac",
+                          "isBuilt":  true
+                      }
+                  ]
 }
