@@ -44,6 +44,15 @@
       "created": "2026-02-25",
       "folder": "tranzistor-jako-spinac",
       "isBuilt": true
+    },
+    {
+      "id": "virtu-ln-laborka-ss-stroje",
+      "name": "Virtuální laborka - SS stroje",
+      "description": "Virtuální laboratoř - Stejnosměrné stroje",
+      "icon": "⚡",
+      "created": "2026-03-05",
+      "folder": "virtu-ln-laborka-ss-stroje",
+      "isBuilt": true
     }
   ]
 }
