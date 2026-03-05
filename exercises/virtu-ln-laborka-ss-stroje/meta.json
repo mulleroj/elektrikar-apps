@@ -1,9 +1,6 @@
 {
-  "id": "virtu-ln-laborka-ss-stroje",
-  "name": "react-example",
-  "description": "react example",
-  "icon": "⚡",
-  "created": "2026-03-05",
-  "folder": "virtu-ln-laborka-ss-stroje",
-  "isBuilt": true
+  "name": "Stejnosměrné stroje",
+  "description": "Interaktivní stejnosměrný stroj",
+  "icon": "🏗️",
+  "updated": "2026-03-05"
 }
