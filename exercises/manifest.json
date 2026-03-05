@@ -19,6 +19,15 @@
       "isBuilt": true
     },
     {
+      "id": "interaktivn-simul-tor-pojistky",
+      "name": "Interaktivní simulátor pojistky",
+      "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
+      "icon": "⚡",
+      "created": "2026-03-05",
+      "folder": "interaktivn-simul-tor-pojistky",
+      "isBuilt": true
+    },
+    {
       "id": "react-example",
       "name": "Simulátor Elektroinstalace",
       "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
@@ -47,8 +56,8 @@
     },
     {
       "id": "virtu-ln-laborka-ss-stroje",
-      "name": "Virtuální laborka - SS stroje",
-      "description": "Virtuální laboratoř - Stejnosměrné stroje",
+      "name": "react-example",
+      "description": "react example",
       "icon": "⚡",
       "created": "2026-03-05",
       "folder": "virtu-ln-laborka-ss-stroje",
