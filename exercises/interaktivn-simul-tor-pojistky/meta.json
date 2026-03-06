@@ -1,9 +1,6 @@
 {
-  "id": "interaktivn-simul-tor-pojistky",
-  "name": "Interaktivní simulátor pojistky",
+  "name": "Pojistky",
   "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
   "icon": "⚡",
-  "created": "2026-03-05",
-  "folder": "interaktivn-simul-tor-pojistky",
-  "isBuilt": true
+  "updated": "2026-03-06"
 }
