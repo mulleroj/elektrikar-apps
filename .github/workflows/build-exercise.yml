@@ -22,6 +22,12 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
       - name: Process ZIP files
         run: |
           shopt -s nullglob
@@ -48,10 +54,33 @@ jobs:
             else
               projectdir="$tmpdir"
             fi
+
+            # BUILD STEP: If package.json exists, it's likely a Vite/React project
+            if [ -f "$projectdir/package.json" ]; then
+              echo "🔨 detected package.json, building project..."
+              cd "$projectdir"
+              npm install
+              # Build with base set to ./ to ensure relative paths work in the gallery
+              if grep -q "vite" package.json; then
+                npm run build -- --base="./"
+              else
+                npm run build
+              fi
+              
+              # If build produced a dist/ directory, use it as projectdir
+              if [ -d "dist" ]; then
+                projectdir="$projectdir/dist"
+                echo "📁 Using build output directory: dist"
+              elif [ -d "build" ]; then
+                projectdir="$projectdir/build"
+                echo "📁 Using build output directory: build"
+              fi
+              cd - > /dev/null
+            fi
             
             # Check for index.html
             if [ ! -f "$projectdir/index.html" ]; then
-              # Try common subdirectories
+              # Try common subdirectories (for cases where build output is elsewhere)
               for subdir in dist build out public; do
                 if [ -f "$projectdir/$subdir/index.html" ]; then
                   projectdir="$projectdir/$subdir"
@@ -89,18 +118,18 @@ jobs:
             echo "📁 Copied to $targetdir"
             
             # Create/update meta.json
-            description=$(echo "$basename" | sed 's/-/ /g')
+            name_clean=$(echo "$basename" | sed 's/-/ /g' | sed 's/  */ /g')
             cat > "$targetdir/meta.json" <<EOF
-          {
-            "id": "$safename",
-            "name": "$basename",
-            "description": "$description",
-            "icon": "⚡",
-            "created": "$(date +%Y-%m-%d)",
-            "folder": "$safename",
-            "isBuilt": true
-          }
-          EOF
+            {
+              "id": "$safename",
+              "name": "$name_clean",
+              "description": "$name_clean",
+              "icon": "⚡",
+              "created": "$(date +%Y-%m-%d)",
+              "folder": "$safename",
+              "isBuilt": true
+            }
+EOF
             
             # Remove processed ZIP
             rm "$zip_file"
