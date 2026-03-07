@@ -4,7 +4,8 @@
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
-      "updated": "2026-03-05"
+      "created": "2026-03-07",
+      "isBuilt": true
     },
     {
       "id": "dioda",
@@ -28,7 +29,8 @@
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
-      "updated": "2026-03-06"
+      "created": "2026-03-07",
+      "isBuilt": true
     },
     {
       "id": "react-example",
@@ -43,7 +45,8 @@
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
       "icon": "🏗️",
-      "updated": "2026-03-06"
+      "created": "2026-03-07",
+      "isBuilt": true
     },
     {
       "id": "tranzistor-jako-spinac",
@@ -56,7 +59,7 @@
     },
     {
       "id": "virtu-ln-laborka-ss-stroje",
-      "name": "virtu-ln--laborka--ss-stroje",
+      "name": "Ste",
       "description": "virtu ln  laborka  ss stroje",
       "icon": "⚡",
       "created": "2026-03-07",
