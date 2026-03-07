@@ -1,13 +1,10 @@
 {
   "exercises": [
     {
-      "id": "asynchronni-stroje",
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
-      "created": "2026-03-01",
-      "folder": "asynchronni-stroje",
-      "isBuilt": true
+      "updated": "2026-03-05"
     },
     {
       "id": "dioda",
@@ -19,13 +16,19 @@
       "isBuilt": true
     },
     {
-      "id": "interaktivn-simul-tor-pojistky",
+      "id": "elektrick-p-stroje-n-zk-ho-nap-t",
+      "name": "elektrick--p--stroje-n-zk-ho-nap-t-",
+      "description": "elektrick  p  stroje n zk ho nap t ",
+      "icon": "⚡",
+      "created": "2026-03-07",
+      "folder": "elektrick-p-stroje-n-zk-ho-nap-t",
+      "isBuilt": true
+    },
+    {
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
-      "created": "2026-03-05",
-      "folder": "interaktivn-simul-tor-pojistky",
-      "isBuilt": true
+      "updated": "2026-03-06"
     },
     {
       "id": "react-example",
@@ -37,13 +40,10 @@
       "isBuilt": true
     },
     {
-      "id": "synclab-v1-0",
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
       "icon": "🏗️",
-      "created": "2026-03-05",
-      "folder": "synclab-v1-0",
-      "isBuilt": true
+      "updated": "2026-03-06"
     },
     {
       "id": "tranzistor-jako-spinac",
@@ -56,10 +56,10 @@
     },
     {
       "id": "virtu-ln-laborka-ss-stroje",
-      "name": "Stejnosměrné stroje",
-      "description": "Interaktivní stejnosměrný stroj",
-      "icon": "🏗️",
-      "created": "2026-03-05",
+      "name": "virtu-ln--laborka--ss-stroje",
+      "description": "virtu ln  laborka  ss stroje",
+      "icon": "⚡",
+      "created": "2026-03-07",
       "folder": "virtu-ln-laborka-ss-stroje",
       "isBuilt": true
     }
