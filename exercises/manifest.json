@@ -1,10 +1,12 @@
 {
   "exercises": [
     {
+      "id": "asynchronni-stroje",
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
       "created": "2026-03-07",
+      "folder": "asynchronni-stroje",
       "isBuilt": true
     },
     {
@@ -26,10 +28,12 @@
       "isBuilt": true
     },
     {
+      "id": "interaktivn-simul-tor-pojistky",
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
       "created": "2026-03-07",
+      "folder": "interaktivn-simul-tor-pojistky",
       "isBuilt": true
     },
     {
@@ -42,10 +46,12 @@
       "isBuilt": true
     },
     {
+      "id": "synclab-v1-0",
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
       "icon": "🏗️",
       "created": "2026-03-07",
+      "folder": "synclab-v1-0",
       "isBuilt": true
     },
     {
