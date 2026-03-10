@@ -1,9 +1,6 @@
 {
-  "id": "digitalni-elektrolaborator",
   "name": "Digitální Elektrolaboratoř",
-  "description": "Interaktivní simulátor a generátor úkolů pro studenty elektrotechniky.",
-  "icon": "⚡",
-  "created": "2026-03-10",
-  "folder": "digitalni-elektrolaborator",
-  "isBuilt": true
+  "description": "Interaktivní simulátor a generátor úkolů pro výpočty pro elektrikáře.",
+  "icon": "🔢",
+  "updated": "2026-03-10"
 }
