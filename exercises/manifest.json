@@ -31,6 +31,15 @@
       "updated": "2026-03-06"
     },
     {
+      "id": "laborator-zesilovacu",
+      "name": "laborator zesilovacu",
+      "description": "laborator zesilovacu",
+      "icon": "⚡",
+      "created": "2026-05-04",
+      "folder": "laborator-zesilovacu",
+      "isBuilt": true
+    },
+    {
       "id": "react-example",
       "name": "Simulátor Elektroinstalace",
       "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
