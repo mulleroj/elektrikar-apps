@@ -1,7 +1,7 @@
 node_modules/
 temp-build/
 .DS_Store
-uploads/*.zip
+# uploads/*.zip is needed for GitHub Actions trigger
 uploads/*_temp/
 uploads/*_src/
 tmp_manifest.json
