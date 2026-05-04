@@ -2,5 +2,8 @@
   "name": "Dioda: Interaktivní Průvodce",
   "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
   "icon": "⚡",
-  "updated": "2026-03-07"
+  "id": "dioda",
+  "folder": "dioda",
+  "isBuilt": true,
+  "created": "2026-03-07"
 }

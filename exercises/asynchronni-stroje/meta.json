@@ -2,5 +2,8 @@
   "name": "Asynchronní stroje",
   "description": "Výuková aplikace pro asynchronní stroje",
   "icon": "🏗️",
-  "updated": "2026-03-05"
+  "id": "asynchronni-stroje",
+  "folder": "asynchronni-stroje",
+  "isBuilt": true,
+  "created": "2026-03-05"
 }

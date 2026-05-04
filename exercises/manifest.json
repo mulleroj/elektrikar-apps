@@ -4,54 +4,55 @@
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
-      "created": "2026-05-04",
-      "isBuilt": true
+      "id": "asynchronni-stroje",
+      "folder": "asynchronni-stroje",
+      "isBuilt": true,
+      "created": "2026-03-05"
     },
     {
       "name": "Digitální Elektrolaboratoř",
       "description": "Interaktivní simulátor a generátor úkolů pro výpočty pro elektrikáře.",
       "icon": "🔢",
-      "created": "2026-05-04",
-      "isBuilt": true
+      "id": "digitalni-elektrolaborator",
+      "folder": "digitalni-elektrolaborator",
+      "isBuilt": true,
+      "created": "2026-03-10"
     },
     {
       "name": "Dioda: Interaktivní Průvodce",
       "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
       "icon": "⚡",
-      "created": "2026-05-04",
-      "isBuilt": true
+      "id": "dioda",
+      "folder": "dioda",
+      "isBuilt": true,
+      "created": "2026-03-07"
     },
     {
-      "name": "Elektrické přístroje nízkého napětí",
+      "name": "Elektrické přístroje NN",
       "description": "Interaktivní vzdělávací aplikace o elektrických přístrojích (jističe, stykače atd.).",
       "icon": "🔌",
-      "created": "2026-05-04",
-      "isBuilt": true
+      "id": "elektrick-p-stroje-n-zk-ho-nap-t",
+      "folder": "elektrick-p-stroje-n-zk-ho-nap-t",
+      "isBuilt": true,
+      "created": "2026-03-07"
     },
     {
-      "id": "elektro-prurez-master",
-      "name": "Výpočet průřezu vodičů",
-      "description": "kalkulačku výpočtu průřezu vodičů",
-      "icon": "🔢",
+      "id": "laborator-zesilovacu",
+      "name": "Laboratoř zesilovačů",
+      "description": "laborator zesilovacu",
+      "icon": "⚡",
       "created": "2026-05-04",
-      "folder": "elektro-prurez-master",
+      "folder": "laborator-zesilovacu",
       "isBuilt": true
     },
     {
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
-      "created": "2026-05-04",
-      "isBuilt": true
-    },
-    {
-      "id": "laborator-zesilovacu",
-      "name": "laborator zesilovacu",
-      "description": "laborator zesilovacu",
-      "icon": "⚡",
-      "created": "2026-05-04",
-      "folder": "laborator-zesilovacu",
-      "isBuilt": true
+      "id": "interaktivn-simul-tor-pojistky",
+      "folder": "interaktivn-simul-tor-pojistky",
+      "isBuilt": true,
+      "created": "2026-03-06"
     },
     {
       "id": "react-example",
@@ -63,25 +64,40 @@
       "isBuilt": true
     },
     {
-      "name": "Synchronní stroje",
-      "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
-      "icon": "🏗️",
-      "created": "2026-05-04",
-      "isBuilt": true
-    },
-    {
-      "name": "Tranzistor",
-      "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
-      "icon": "⚡",
-      "created": "2026-05-04",
-      "isBuilt": true
-    },
-    {
       "name": "Stejnosměrné stroje",
       "description": "Virtuální laboratoř stejnosměrných strojů",
       "icon": "🏗️",
-      "created": "2026-05-04",
-      "isBuilt": true
+      "id": "virtu-ln-laborka-ss-stroje",
+      "folder": "virtu-ln-laborka-ss-stroje",
+      "isBuilt": true,
+      "created": "2026-03-07"
+    },
+    {
+      "name": "Synchronní stroje",
+      "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
+      "icon": "🏗️",
+      "id": "synclab-v1-0",
+      "folder": "synclab-v1-0",
+      "isBuilt": true,
+      "created": "2026-03-06"
+    },
+    {
+      "name": "Tranzistor jako spínač",
+      "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
+      "icon": "⚡",
+      "id": "tranzistor-jako-spinac",
+      "folder": "tranzistor-jako-spinac",
+      "isBuilt": true,
+      "created": "2026-03-10"
+    },
+    {
+      "name": "Výpočet průřezu vodičů",
+      "description": "kalkulačku výpočtu průřezu vodičů",
+      "icon": "🔢",
+      "id": "elektro-prurez-master",
+      "folder": "elektro-prurez-master",
+      "isBuilt": true,
+      "created": "2026-05-04"
     }
   ]
 }

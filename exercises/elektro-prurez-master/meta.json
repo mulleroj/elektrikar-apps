@@ -2,5 +2,8 @@
   "name": "Výpočet průřezu vodičů",
   "description": "kalkulačku výpočtu průřezu vodičů",
   "icon": "🔢",
-  "updated": "2026-05-04"
+  "id": "elektro-prurez-master",
+  "folder": "elektro-prurez-master",
+  "isBuilt": true,
+  "created": "2026-05-04"
 }

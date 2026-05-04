@@ -2,5 +2,8 @@
   "name": "Synchronní stroje",
   "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
   "icon": "🏗️",
-  "updated": "2026-03-06"
+  "id": "synclab-v1-0",
+  "folder": "synclab-v1-0",
+  "isBuilt": true,
+  "created": "2026-03-06"
 }

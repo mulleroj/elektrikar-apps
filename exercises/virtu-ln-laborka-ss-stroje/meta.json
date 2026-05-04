@@ -2,5 +2,8 @@
   "name": "Stejnosměrné stroje",
   "description": "Virtuální laboratoř stejnosměrných strojů",
   "icon": "🏗️",
-  "updated": "2026-03-07"
+  "id": "virtu-ln-laborka-ss-stroje",
+  "folder": "virtu-ln-laborka-ss-stroje",
+  "isBuilt": true,
+  "created": "2026-03-07"
 }

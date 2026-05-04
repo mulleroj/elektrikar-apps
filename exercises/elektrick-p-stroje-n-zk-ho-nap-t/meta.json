@@ -1,6 +1,9 @@
 {
-  "name": "Elektrické přístroje nízkého napětí",
+  "name": "Elektrické přístroje NN",
   "description": "Interaktivní vzdělávací aplikace o elektrických přístrojích (jističe, stykače atd.).",
   "icon": "🔌",
-  "updated": "2026-03-07"
+  "id": "elektrick-p-stroje-n-zk-ho-nap-t",
+  "folder": "elektrick-p-stroje-n-zk-ho-nap-t",
+  "isBuilt": true,
+  "created": "2026-03-07"
 }
