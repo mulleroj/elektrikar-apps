@@ -1,40 +1,34 @@
 {
   "exercises": [
     {
-      "id": "asynchronni-stroje",
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
-      "created": "2026-03-07",
-      "folder": "asynchronni-stroje",
-      "isBuilt": true
+      "updated": "2026-03-05"
     },
     {
-      "id": "dioda",
+      "name": "Digitální Elektrolaboratoř",
+      "description": "Interaktivní simulátor a generátor úkolů pro výpočty pro elektrikáře.",
+      "icon": "🔢",
+      "updated": "2026-03-10"
+    },
+    {
       "name": "Dioda: Interaktivní Průvodce",
       "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
       "icon": "⚡",
-      "created": "2026-03-04",
-      "folder": "dioda",
-      "isBuilt": true
+      "updated": "2026-03-07"
     },
     {
-      "id": "elektrick-p-stroje-n-zk-ho-nap-t",
       "name": "Elektrické přístroje nízkého napětí",
       "description": "Interaktivní vzdělávací aplikace o elektrických přístrojích (jističe, stykače atd.).",
       "icon": "🔌",
-      "created": "2026-03-07",
-      "folder": "elektrick-p-stroje-n-zk-ho-nap-t",
-      "isBuilt": true
+      "updated": "2026-03-07"
     },
     {
-      "id": "interaktivn-simul-tor-pojistky",
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
-      "created": "2026-03-07",
-      "folder": "interaktivn-simul-tor-pojistky",
-      "isBuilt": true
+      "updated": "2026-03-06"
     },
     {
       "id": "react-example",
@@ -46,40 +40,22 @@
       "isBuilt": true
     },
     {
-      "id": "synclab-v1-0",
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
       "icon": "🏗️",
-      "created": "2026-03-07",
-      "folder": "synclab-v1-0",
-      "isBuilt": true
+      "updated": "2026-03-06"
     },
     {
-      "id": "tranzistor-jako-spinac",
       "name": "Tranzistor",
       "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
       "icon": "⚡",
-      "created": "2026-02-25",
-      "folder": "tranzistor-jako-spinac",
-      "isBuilt": true
+      "updated": "2026-03-10"
     },
     {
-      "id": "virtu-ln-laborka-ss-stroje",
       "name": "Stejnosměrné stroje",
       "description": "Virtuální laboratoř stejnosměrných strojů",
       "icon": "🏗️",
-      "created": "2026-03-07",
-      "folder": "virtu-ln-laborka-ss-stroje",
-      "isBuilt": true
-    },
-    {
-      "id": "digitalni-elektrolaborator",
-      "name": "Digitální Elektrolaboratoř",
-      "description": "Interaktivní simulátor a generátor úkolů pro výpočty pro elektrikáře.",
-      "icon": "🔢",
-      "created": "2026-03-10",
-      "folder": "digitalni-elektrolaborator",
-      "isBuilt": true
+      "updated": "2026-03-07"
     }
   ]
 }
