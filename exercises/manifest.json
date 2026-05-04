@@ -4,31 +4,35 @@
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
-      "updated": "2026-03-05"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
       "name": "Digitální Elektrolaboratoř",
       "description": "Interaktivní simulátor a generátor úkolů pro výpočty pro elektrikáře.",
       "icon": "🔢",
-      "updated": "2026-03-10"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
       "name": "Dioda: Interaktivní Průvodce",
       "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
       "icon": "⚡",
-      "updated": "2026-03-07"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
       "name": "Elektrické přístroje nízkého napětí",
       "description": "Interaktivní vzdělávací aplikace o elektrických přístrojích (jističe, stykače atd.).",
       "icon": "🔌",
-      "updated": "2026-03-07"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
       "id": "elektro-prurez-master",
-      "name": "elektro prurez master",
-      "description": "elektro prurez master",
-      "icon": "⚡",
+      "name": "Výpočet průřezu vodičů",
+      "description": "kalkulačku výpočtu průřezu vodičů",
+      "icon": "🔢",
       "created": "2026-05-04",
       "folder": "elektro-prurez-master",
       "isBuilt": true
@@ -37,7 +41,8 @@
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
-      "updated": "2026-03-06"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
       "id": "laborator-zesilovacu",
@@ -61,19 +66,22 @@
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
       "icon": "🏗️",
-      "updated": "2026-03-06"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
       "name": "Tranzistor",
       "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
       "icon": "⚡",
-      "updated": "2026-03-10"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
       "name": "Stejnosměrné stroje",
       "description": "Virtuální laboratoř stejnosměrných strojů",
       "icon": "🏗️",
-      "updated": "2026-03-07"
+      "created": "2026-05-04",
+      "isBuilt": true
     }
   ]
 }
