@@ -119,17 +119,7 @@ jobs:
             
             # Create/update meta.json
             name_clean=$(echo "$basename" | sed 's/-/ /g' | sed 's/  */ /g')
-            cat > "$targetdir/meta.json" <<EOF
-            {
-              "id": "$safename",
-              "name": "$name_clean",
-              "description": "$name_clean",
-              "icon": "⚡",
-              "created": "$(date +%Y-%m-%d)",
-              "folder": "$safename",
-              "isBuilt": true
-            }
-EOF
+            printf '{\n  "id": "%s",\n  "name": "%s",\n  "description": "%s",\n  "icon": "⚡",\n  "created": "%s",\n  "folder": "%s",\n  "isBuilt": true\n}' "$safename" "$name_clean" "$name_clean" "$(date +%Y-%m-%d)" "$safename" > "$targetdir/meta.json"
             
             # Remove processed ZIP
             rm "$zip_file"

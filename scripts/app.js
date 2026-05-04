@@ -196,7 +196,7 @@ async function handleFileUpload(file) {
         progressText.textContent = 'Nahrávám na GitHub...';
         progressFill.style.width = '50%';
 
-        const fileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '-');
+        const fileName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9.-]/g, '-').replace(/-+/g, '-');
         const path = `uploads/${fileName}`;
         const result = await uploadToGitHub(path, base64Content, `📦 Upload: ${file.name}`);
 
