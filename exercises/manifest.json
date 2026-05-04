@@ -1,64 +1,64 @@
 {
   "exercises": [
     {
+      "id": "asynchronni-stroje",
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
-      "id": "asynchronni-stroje",
+      "created": "2026-03-05",
       "folder": "asynchronni-stroje",
-      "isBuilt": true,
-      "created": "2026-03-05"
+      "isBuilt": true
     },
     {
+      "id": "digitalni-elektrolaborator",
       "name": "Digitální Elektrolaboratoř",
       "description": "Interaktivní simulátor a generátor úkolů pro výpočty pro elektrikáře.",
       "icon": "🔢",
-      "id": "digitalni-elektrolaborator",
+      "created": "2026-03-10",
       "folder": "digitalni-elektrolaborator",
-      "isBuilt": true,
-      "created": "2026-03-10"
+      "isBuilt": true
     },
     {
+      "id": "dioda",
       "name": "Dioda: Interaktivní Průvodce",
       "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
       "icon": "⚡",
-      "id": "dioda",
+      "created": "2026-03-07",
       "folder": "dioda",
-      "isBuilt": true,
-      "created": "2026-03-07"
+      "isBuilt": true
     },
     {
+      "id": "elektrick-p-stroje-n-zk-ho-nap-t",
       "name": "Elektrické přístroje NN",
       "description": "Interaktivní vzdělávací aplikace o elektrických přístrojích (jističe, stykače atd.).",
       "icon": "🔌",
-      "id": "elektrick-p-stroje-n-zk-ho-nap-t",
+      "created": "2026-03-07",
       "folder": "elektrick-p-stroje-n-zk-ho-nap-t",
-      "isBuilt": true,
-      "created": "2026-03-07"
+      "isBuilt": true
     },
     {
+      "id": "elektro-prurez-master",
       "name": "Výpočet průřezu vodičů",
       "description": "kalkulačku výpočtu průřezu vodičů",
       "icon": "🔢",
-      "id": "elektro-prurez-master",
+      "created": "2026-05-04",
       "folder": "elektro-prurez-master",
-      "isBuilt": true,
-      "created": "2026-05-04"
+      "isBuilt": true
     },
     {
+      "id": "interaktivn-simul-tor-pojistky",
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
-      "id": "interaktivn-simul-tor-pojistky",
+      "created": "2026-03-06",
       "folder": "interaktivn-simul-tor-pojistky",
-      "isBuilt": true,
-      "created": "2026-03-06"
+      "isBuilt": true
     },
     {
       "id": "interaktivni-vyuka-hromosvody",
-      "name": "interaktivni vyuka hromosvody",
-      "description": "interaktivni vyuka hromosvody",
-      "icon": "⚡",
+      "name": "Hromosvody",
+      "description": "Nauč se vše o hromosvodech a proč jsou potřeba.",
+      "icon": "🏠",
       "created": "2026-05-04",
       "folder": "interaktivni-vyuka-hromosvody",
       "isBuilt": true
@@ -76,34 +76,35 @@
       "name": "Simulátor elektroinstalace",
       "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
       "icon": "⚡",
-      "updated": "2026-05-04"
+      "created": "2026-05-04",
+      "isBuilt": true
     },
     {
+      "id": "synclab-v1-0",
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
       "icon": "🏗️",
-      "id": "synclab-v1-0",
+      "created": "2026-03-06",
       "folder": "synclab-v1-0",
-      "isBuilt": true,
-      "created": "2026-03-06"
+      "isBuilt": true
     },
     {
+      "id": "tranzistor-jako-spinac",
       "name": "Tranzistor jako spínač",
       "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
       "icon": "⚡",
-      "id": "tranzistor-jako-spinac",
+      "created": "2026-03-10",
       "folder": "tranzistor-jako-spinac",
-      "isBuilt": true,
-      "created": "2026-03-10"
+      "isBuilt": true
     },
     {
+      "id": "virtu-ln-laborka-ss-stroje",
       "name": "Stejnosměrné stroje",
       "description": "Virtuální laboratoř stejnosměrných strojů",
       "icon": "🏗️",
-      "id": "virtu-ln-laborka-ss-stroje",
+      "created": "2026-03-07",
       "folder": "virtu-ln-laborka-ss-stroje",
-      "isBuilt": true,
-      "created": "2026-03-07"
+      "isBuilt": true
     }
   ]
 }
