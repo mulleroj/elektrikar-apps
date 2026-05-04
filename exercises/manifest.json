@@ -37,13 +37,13 @@
       "created": "2026-03-07"
     },
     {
-      "id": "laborator-zesilovacu",
-      "name": "Laboratoř zesilovačů",
-      "description": "laborator zesilovacu",
-      "icon": "⚡",
-      "created": "2026-05-04",
-      "folder": "laborator-zesilovacu",
-      "isBuilt": true
+      "name": "Výpočet průřezu vodičů",
+      "description": "kalkulačku výpočtu průřezu vodičů",
+      "icon": "🔢",
+      "id": "elektro-prurez-master",
+      "folder": "elektro-prurez-master",
+      "isBuilt": true,
+      "created": "2026-05-04"
     },
     {
       "name": "Pojistky",
@@ -55,6 +55,15 @@
       "created": "2026-03-06"
     },
     {
+      "id": "laborator-zesilovacu",
+      "name": "Laboratoř zesilovačů",
+      "description": "laborator zesilovacu",
+      "icon": "⚡",
+      "created": "2026-05-04",
+      "folder": "laborator-zesilovacu",
+      "isBuilt": true
+    },
+    {
       "id": "react-example",
       "name": "Simulátor Elektroinstalace",
       "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
@@ -64,13 +73,13 @@
       "isBuilt": true
     },
     {
-      "name": "Stejnosměrné stroje",
-      "description": "Virtuální laboratoř stejnosměrných strojů",
-      "icon": "🏗️",
-      "id": "virtu-ln-laborka-ss-stroje",
-      "folder": "virtu-ln-laborka-ss-stroje",
-      "isBuilt": true,
-      "created": "2026-03-07"
+      "id": "simulator-elektroinstalace-2",
+      "name": "simulator elektroinstalace 2 ",
+      "description": "simulator elektroinstalace 2 ",
+      "icon": "⚡",
+      "created": "2026-05-04",
+      "folder": "simulator-elektroinstalace-2",
+      "isBuilt": true
     },
     {
       "name": "Synchronní stroje",
@@ -91,13 +100,13 @@
       "created": "2026-03-10"
     },
     {
-      "name": "Výpočet průřezu vodičů",
-      "description": "kalkulačku výpočtu průřezu vodičů",
-      "icon": "🔢",
-      "id": "elektro-prurez-master",
-      "folder": "elektro-prurez-master",
+      "name": "Stejnosměrné stroje",
+      "description": "Virtuální laboratoř stejnosměrných strojů",
+      "icon": "🏗️",
+      "id": "virtu-ln-laborka-ss-stroje",
+      "folder": "virtu-ln-laborka-ss-stroje",
       "isBuilt": true,
-      "created": "2026-05-04"
+      "created": "2026-03-07"
     }
   ]
 }
