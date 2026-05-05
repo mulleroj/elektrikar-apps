@@ -64,6 +64,15 @@
       "isBuilt": true
     },
     {
+      "id": "kondenzator-lab",
+      "name": "kondenzator lab",
+      "description": "kondenzator lab",
+      "icon": "⚡",
+      "created": "2026-05-05",
+      "folder": "kondenzator-lab",
+      "isBuilt": true
+    },
+    {
       "id": "laborator-zesilovacu",
       "name": "Laboratoř zesilovačů",
       "description": "laborator zesilovacu",
