@@ -1,9 +1,6 @@
 {
-  "id": "sinusovka-interaktivni-simulace",
-  "name": "sinusovka interaktivni simulace",
-  "description": "sinusovka interaktivni simulace",
+  "name": "Sinusovka - interaktivni simulace",
+  "description": "Interaktivní simulace elektromagnetické indukce",
   "icon": "⚡",
-  "created": "2026-05-05",
-  "folder": "sinusovka-interaktivni-simulace",
-  "isBuilt": true
+  "updated": "2026-05-05"
 }
