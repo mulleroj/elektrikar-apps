@@ -89,15 +89,6 @@
       "isBuilt": true
     },
     {
-      "id": "sinusovka-interaktivni-simulace",
-      "name": "Sinusovka - interaktivni simulace",
-      "description": "Interaktivní simulace elektromagnetické indukce",
-      "icon": "⚡",
-      "created": "2026-05-05",
-      "folder": "sinusovka-interaktivni-simulace",
-      "isBuilt": true
-    },
-    {
       "id": "synclab-v1-0",
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
