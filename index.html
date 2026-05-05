@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Volt & Amper Kingdom | Aplikace pro elektrikáře</title>
     <meta name="description" content="Interaktivní aplikace pro obor Elektrikář vytvořené v AI Studio Builderu">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/main.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
@@ -22,6 +22,15 @@
                 <nav class="nav">
                     <a href="#apps" class="nav-link">Aplikace</a>
                     <a href="#how-to" class="nav-link" id="adminNavLink" hidden>Jak přidat</a>
+                    <div class="qr-share">
+                        <div class="qr-icon-wrapper">
+                            <svg class="qr-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><line x1="7" y1="7" x2="7" y2="7"></line><line x1="17" y1="7" x2="17" y2="7"></line><line x1="17" y1="17" x2="17" y2="17"></line><line x1="7" y1="17" x2="7" y2="17"></line></svg>
+                        </div>
+                        <div class="qr-tooltip">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://elektrikar-apps.netlify.app/&bgcolor=0f1f36&color=f59e0b&margin=10" alt="QR Code" class="qr-code-img">
+                            <span>Skenuj a sdílej 📱</span>
+                        </div>
+                    </div>
                 </nav>
             </div>
         </header>
