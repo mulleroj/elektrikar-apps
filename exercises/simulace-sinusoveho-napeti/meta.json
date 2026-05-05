@@ -1,0 +1,9 @@
+{
+  "id": "simulace-sinusoveho-napeti",
+  "name": "simulace sinusoveho napeti",
+  "description": "simulace sinusoveho napeti",
+  "icon": "⚡",
+  "created": "2026-05-05",
+  "folder": "simulace-sinusoveho-napeti",
+  "isBuilt": true
+}
