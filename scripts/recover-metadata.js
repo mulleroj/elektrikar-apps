@@ -1,3 +1,9 @@
+/**
+ * Recovery script for Volt & Amper Kingdom
+ * Ensures all exercise meta.json files and the main manifest.json are consistent.
+ * This script is now integrated into the GitHub Actions workflow.
+ */
+
 const fs = require('fs');
 const path = require('path');
 
@@ -22,6 +28,11 @@ const properNames = {
 const exercisesDir = path.join(__dirname, '..', 'exercises');
 const manifestPath = path.join(exercisesDir, 'manifest.json');
 
+if (!fs.existsSync(exercisesDir)) {
+    console.error('❌ Exercises directory not found!');
+    process.exit(1);
+}
+
 const exerciseFolders = fs.readdirSync(exercisesDir).filter(f => {
     return fs.statSync(path.join(exercisesDir, f)).isDirectory();
 });
@@ -35,30 +46,44 @@ exerciseFolders.forEach(folder => {
     if (fs.existsSync(metaPath)) {
         try {
             meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-        } catch (e) {}
+        } catch (e) {
+            console.warn(`⚠️ Could not parse meta.json in ${folder}`);
+        }
     }
 
-    meta.id = meta.id || folder;
-    meta.folder = meta.folder || folder;
+    // Core fields - ensure they match the folder name
+    meta.id = folder;
+    meta.folder = folder;
     meta.isBuilt = true;
-    meta.name = properNames[folder] || meta.name || folder;
-    
+
+    // Display fields - preserve existing or use properNames/folder
+    meta.name = properNames[folder] || meta.name || folder.replace(/-/g, ' ');
     if (!meta.description) meta.description = meta.name;
-    if (!meta.icon) {
+
+    // Icon logic
+    if (!meta.icon || meta.icon === '⚡') {
         if (folder.includes('stroje') || folder.includes('laborka') || folder.includes('laborator')) meta.icon = '🏗️';
         else if (folder.includes('simulace') || folder.includes('simulator')) meta.icon = '⚡';
-        else if (folder.includes('lab')) meta.icon = '🔬';
+        else if (folder.includes('lab') || folder.includes('prurez')) meta.icon = '🔬';
         else meta.icon = '⚡';
     }
+    
+    // Ensure "Výpočet" has the measurement icon
     if ((folder.includes('elektro') || folder.includes('prurez')) && !folder.includes('simulator')) meta.icon = '🔢';
     
-    if (!meta.created) meta.created = meta.updated || new Date().toISOString().split('T')[0];
+    // Date
+    if (!meta.created) {
+        meta.created = meta.updated || new Date().toISOString().split('T')[0];
+    }
     delete meta.updated;
 
+    // Save back to folder
     fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf8');
     exercises.push(meta);
 });
 
+// Build and save manifest (sorted by ID for stability)
 const manifest = { exercises: exercises.sort((a, b) => a.id.localeCompare(b.id)) };
 fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf8');
-console.log('✨ Metadata a manifest byly úspěšně opraveny s českými názvy!');
+
+console.log(`✨ Processed ${exercises.length} exercises. Manifest updated!`);

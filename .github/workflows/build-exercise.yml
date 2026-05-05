@@ -132,34 +132,9 @@ jobs:
             echo "⚠️ No ZIP files found to process"
           fi
 
-      - name: Update manifest
+      - name: Update metadata and manifest
         run: |
-          # Build manifest from meta.json files
-          echo '{"exercises":[' > exercises/manifest.json.tmp
-          first=true
-          for meta in exercises/*/meta.json; do
-            if [ -f "$meta" ]; then
-              if [ "$first" = false ]; then
-                echo ',' >> exercises/manifest.json.tmp
-              fi
-              cat "$meta" >> exercises/manifest.json.tmp
-              first=false
-            fi
-          done
-          echo ']}' >> exercises/manifest.json.tmp
-
-          # Pretty-print with python (available on ubuntu)
-          python3 -c "
-          import json, sys
-          with open('exercises/manifest.json.tmp') as f:
-              data = json.load(f)
-          with open('exercises/manifest.json', 'w') as f:
-              json.dump(data, f, indent=2, ensure_ascii=False)
-          "
-          rm exercises/manifest.json.tmp
-
-          echo "📋 Manifest updated:"
-          cat exercises/manifest.json
+          node scripts/recover-metadata.js
 
       - name: Commit built apps
         run: |
