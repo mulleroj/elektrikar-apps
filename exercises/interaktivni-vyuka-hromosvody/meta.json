@@ -1,6 +1,9 @@
 {
+  "id": "interaktivni-vyuka-hromosvody",
   "name": "Hromosvody",
   "description": "Nauč se vše o hromosvodech a proč jsou potřeba.",
   "icon": "🏠",
-  "updated": "2026-05-04"
+  "created": "2026-05-04",
+  "folder": "interaktivni-vyuka-hromosvody",
+  "isBuilt": true
 }

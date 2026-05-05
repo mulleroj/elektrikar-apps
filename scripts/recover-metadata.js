@@ -8,8 +8,9 @@ const properNames = {
     "elektrick-p-stroje-n-zk-ho-nap-t": "Elektrické přístroje NN",
     "elektro-prurez-master": "Výpočet průřezu vodičů",
     "interaktivn-simul-tor-pojistky": "Pojistky",
+    "interaktivni-vyuka-hromosvody": "Hromosvody",
     "laborator-zesilovacu": "Laboratoř zesilovačů",
-    "react-example": "Simulátor Elektroinstalace",
+    "simulator-elektroinstalace-2": "Simulátor elektroinstalace",
     "synclab-v1-0": "Synchronní stroje",
     "tranzistor-jako-spinac": "Tranzistor jako spínač",
     "virtu-ln-laborka-ss-stroje": "Stejnosměrné stroje"
@@ -41,7 +42,7 @@ exerciseFolders.forEach(folder => {
     
     if (!meta.description) meta.description = meta.name;
     if (!meta.icon) meta.icon = (folder.includes('stroje') || folder.includes('laborka')) ? '🏗️' : '⚡';
-    if (folder.includes('elektro') || folder.includes('prurez')) meta.icon = '🔢';
+    if ((folder.includes('elektro') || folder.includes('prurez')) && !folder.includes('simulator')) meta.icon = '🔢';
     
     if (!meta.created) meta.created = meta.updated || new Date().toISOString().split('T')[0];
     delete meta.updated;
@@ -50,6 +51,6 @@ exerciseFolders.forEach(folder => {
     exercises.push(meta);
 });
 
-const manifest = { exercises: exercises.sort((a, b) => a.name.localeCompare(b.name, 'cs')) };
+const manifest = { exercises: exercises.sort((a, b) => a.id.localeCompare(b.id)) };
 fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf8');
 console.log('✨ Metadata a manifest byly úspěšně opraveny s českými názvy!');
