@@ -254,6 +254,25 @@ body::before {
     max-width: 500px;
 }
 
+.app-count-badge {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--primary);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-family: inherit;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.hero-description:hover .app-count-badge {
+    background: rgba(245, 158, 11, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
+}
+
+
 .hero-visual {
     display: flex;
     justify-content: center;

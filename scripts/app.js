@@ -38,7 +38,8 @@ const elements = {
     exerciseFrame: document.getElementById('exerciseFrame'),
     githubToken: document.getElementById('githubToken'),
     githubRepo: document.getElementById('githubRepo'),
-    saveSettings: document.getElementById('saveSettings')
+    saveSettings: document.getElementById('saveSettings'),
+    appCount: document.getElementById('appCount')
 };
 
 // ===== Initialize =====
@@ -282,6 +283,12 @@ function renderExercises() {
     if (!exercisesGrid || !emptyState) return;
 
     const allExercises = [...builtExercises];
+    
+    // Update app count in hero
+    if (elements.appCount) {
+        elements.appCount.textContent = allExercises.length;
+    }
+
     if (allExercises.length === 0) {
         exercisesGrid.innerHTML = '';
         emptyState.hidden = false;
