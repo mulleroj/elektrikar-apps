@@ -1,6 +1,9 @@
 {
-  "name": "Simulace sinusoveho napeti",
+  "name": "Simulace sinusového napětí",
   "description": "Interaktivní výuková pomůcka pro vizualizaci elektromagnetické indukce v rotujícím vodiči.",
   "icon": "🎛️",
-  "updated": "2026-05-05"
+  "id": "simulace-sinusoveho-napeti",
+  "folder": "simulace-sinusoveho-napeti",
+  "isBuilt": true,
+  "created": "2026-05-05"
 }

@@ -7,9 +7,12 @@ const properNames = {
     "dioda": "Dioda: Interaktivní Průvodce",
     "elektrick-p-stroje-n-zk-ho-nap-t": "Elektrické přístroje NN",
     "elektro-prurez-master": "Výpočet průřezu vodičů",
+    "hopkinsonova-laborator-v2-1": "Hopkinsonova laboratoř",
     "interaktivn-simul-tor-pojistky": "Pojistky",
     "interaktivni-vyuka-hromosvody": "Hromosvody",
+    "kondenzator-lab": "Kondenzátor Lab",
     "laborator-zesilovacu": "Laboratoř zesilovačů",
+    "simulace-sinusoveho-napeti": "Simulace sinusového napětí",
     "simulator-elektroinstalace-2": "Simulátor elektroinstalace",
     "synclab-v1-0": "Synchronní stroje",
     "tranzistor-jako-spinac": "Tranzistor jako spínač",
@@ -41,7 +44,12 @@ exerciseFolders.forEach(folder => {
     meta.name = properNames[folder] || meta.name || folder;
     
     if (!meta.description) meta.description = meta.name;
-    if (!meta.icon) meta.icon = (folder.includes('stroje') || folder.includes('laborka')) ? '🏗️' : '⚡';
+    if (!meta.icon) {
+        if (folder.includes('stroje') || folder.includes('laborka') || folder.includes('laborator')) meta.icon = '🏗️';
+        else if (folder.includes('simulace') || folder.includes('simulator')) meta.icon = '⚡';
+        else if (folder.includes('lab')) meta.icon = '🔬';
+        else meta.icon = '⚡';
+    }
     if ((folder.includes('elektro') || folder.includes('prurez')) && !folder.includes('simulator')) meta.icon = '🔢';
     
     if (!meta.created) meta.created = meta.updated || new Date().toISOString().split('T')[0];

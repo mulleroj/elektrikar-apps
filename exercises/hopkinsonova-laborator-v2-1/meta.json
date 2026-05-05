@@ -2,5 +2,8 @@
   "name": "Hopkinsonova laboratoř",
   "description": "Vysvětlení Hopkinsonova zákona",
   "icon": "👷",
-  "updated": "2026-05-05"
+  "id": "hopkinsonova-laborator-v2-1",
+  "folder": "hopkinsonova-laborator-v2-1",
+  "isBuilt": true,
+  "created": "2026-05-05"
 }

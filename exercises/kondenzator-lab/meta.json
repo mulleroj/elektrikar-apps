@@ -1,6 +1,9 @@
 {
-  "name": "Kondenzator lab",
+  "name": "Kondenzátor Lab",
   "description": "Fyzikální simulace reaktance & fázového posunu",
   "icon": "⚙️",
-  "updated": "2026-05-05"
+  "id": "kondenzator-lab",
+  "folder": "kondenzator-lab",
+  "isBuilt": true,
+  "created": "2026-05-05"
 }
