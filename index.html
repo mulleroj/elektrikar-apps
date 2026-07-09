@@ -96,15 +96,19 @@
                     <div class="settings-form">
                         <div class="form-group">
                             <label for="githubToken">GitHub Token:</label>
-                            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxx..." autocomplete="off">
-                            <small>Token se ukládá pouze v prohlížeči</small>
+                            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxx..." autocomplete="new-password">
+                            <small>Token se drží pouze v paměti této záložky a po obnovení stránky se vymaže.</small>
                         </div>
                         <div class="form-group">
                             <label for="githubRepo">Repozitář:</label>
                             <input type="text" id="githubRepo" value="mulleroj/elektrikar-apps"
                                 placeholder="vlastnik/repo">
                         </div>
-                        <button class="btn btn-secondary" id="saveSettings">💾 Uložit nastavení</button>
+                        <button class="btn btn-secondary" id="saveSettings">💾 Uložit do paměti</button>
+                        <button class="btn btn-danger" id="forgetSettings" style="background: #ef4444; color: white;">🗑️ Zapomenout token</button>
+                    </div>
+                    <div class="settings-notice" style="margin-top: 16px; padding: 12px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; font-size: 0.8rem; color: #fbbf24;">
+                        ⚠️ <strong>Doporučení:</strong> Používejte výhradně Fine-grained Personal Access Token s nastavenou expirací a oprávněním omezeným pouze pro zápis (Contents: Read/Write) do tohoto repozitáře.
                     </div>
                 </div>
 

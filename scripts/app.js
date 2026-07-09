@@ -40,6 +40,7 @@ const elements = {
     githubToken: document.getElementById('githubToken'),
     githubRepo: document.getElementById('githubRepo'),
     saveSettings: document.getElementById('saveSettings'),
+    forgetSettings: document.getElementById('forgetSettings'),
     appCount: document.getElementById('appCount')
 };
 
@@ -68,27 +69,68 @@ function loadGitHubSettings() {
     try {
         const saved = localStorage.getItem(CONFIG.githubSettingsKey);
         if (saved) {
-            githubSettings = JSON.parse(saved);
-            if (elements.githubToken) elements.githubToken.value = githubSettings.token || '';
-            if (elements.githubRepo) elements.githubRepo.value = githubSettings.repo || 'mulleroj/elektrikar-apps';
+            const parsed = JSON.parse(saved);
+            // DISCARD any stored token from localStorage immediately upon load (Fáze 2A requirement)
+            githubSettings.repo = parsed.repo || 'mulleroj/elektrikar-apps';
+            githubSettings.token = ''; // Token stays empty in memory until entered
+            
+            // Clean localStorage to ensure no token is left on disk
+            localStorage.setItem(CONFIG.githubSettingsKey, JSON.stringify({
+                repo: githubSettings.repo
+            }));
+            
+            if (elements.githubRepo) elements.githubRepo.value = githubSettings.repo;
         }
+        
+        // Explicitly ensure token input DOM element is empty
+        if (elements.githubToken) elements.githubToken.value = '';
     } catch (e) {
         console.warn('Could not load GitHub settings:', e);
     }
 }
 
 function saveGitHubSettings() {
-    githubSettings = {
-        token: elements.githubToken?.value || '',
-        repo: elements.githubRepo?.value || 'mulleroj/elektrikar-apps'
-    };
-    localStorage.setItem(CONFIG.githubSettingsKey, JSON.stringify(githubSettings));
-    showNotification('Nastavení uloženo!', 'success');
+    // Save to in-memory state only
+    githubSettings.token = elements.githubToken?.value || '';
+    githubSettings.repo = elements.githubRepo?.value || 'mulleroj/elektrikar-apps';
+    
+    // Save ONLY the repository to localStorage, never the token
+    try {
+        localStorage.setItem(CONFIG.githubSettingsKey, JSON.stringify({
+            repo: githubSettings.repo
+        }));
+    } catch (e) {
+        console.warn('Could not save repository settings:', e);
+    }
+    
+    showNotification('Nastavení uloženo do paměti relace!', 'success');
+}
+
+function forgetGitHubSettings() {
+    // Clear in-memory token and repo
+    githubSettings.token = '';
+    githubSettings.repo = 'mulleroj/elektrikar-apps';
+    
+    // Clear input fields
+    if (elements.githubToken) elements.githubToken.value = '';
+    if (elements.githubRepo) elements.githubRepo.value = 'mulleroj/elektrikar-apps';
+    
+    // Clear from localStorage entirely
+    try {
+        localStorage.removeItem(CONFIG.githubSettingsKey);
+    } catch (e) {
+        console.warn('Could not clear GitHub settings:', e);
+    }
+    
+    showNotification('Token zapomenut a paměť vyčištěna.', 'info');
 }
 
 function initSettingsForm() {
     if (elements.saveSettings) {
         elements.saveSettings.addEventListener('click', saveGitHubSettings);
+    }
+    if (elements.forgetSettings) {
+        elements.forgetSettings.addEventListener('click', forgetGitHubSettings);
     }
 }
 
