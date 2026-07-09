@@ -23,6 +23,7 @@ let githubSettings = {
     token: '',
     repo: 'mulleroj/elektrikar-apps'
 };
+let lastActiveElement = null;
 
 // ===== DOM Elements =====
 const elements = {
@@ -45,14 +46,14 @@ const elements = {
 // ===== Initialize =====
 document.addEventListener('DOMContentLoaded', async () => {
     isAdmin = new URLSearchParams(window.location.search).has('admin');
-    if (isAdmin) {
-        const uploadSection = document.getElementById('upload');
-        const howToSection = document.getElementById('how-to');
-        const adminNavLink = document.getElementById('adminNavLink');
-        if (uploadSection) uploadSection.hidden = false;
-        if (howToSection) howToSection.hidden = false;
-        if (adminNavLink) adminNavLink.hidden = false;
-    }
+    
+    const uploadSection = document.getElementById('upload');
+    const howToSection = document.getElementById('how-to');
+    const adminNavLink = document.getElementById('adminNavLink');
+    
+    if (uploadSection) uploadSection.hidden = !isAdmin;
+    if (howToSection) howToSection.hidden = !isAdmin;
+    if (adminNavLink) adminNavLink.hidden = !isAdmin;
 
     loadGitHubSettings();
     initUploadZone();
@@ -336,12 +337,28 @@ function initModal() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !modal.hidden) closeModal();
     });
+
+    // Save active element when modal is shown to restore focus on close
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'hidden') {
+                if (!modal.hidden) {
+                    lastActiveElement = document.activeElement;
+                }
+            }
+        });
+    });
+    observer.observe(modal, { attributes: true });
 }
 
 function closeModal() {
     elements.modal.hidden = true;
     elements.exerciseFrame.src = '';
     document.body.style.overflow = '';
+    if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+        lastActiveElement.focus();
+        lastActiveElement = null;
+    }
 }
 
 // ===== Utilities =====
