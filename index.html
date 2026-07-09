@@ -4,8 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volt & Amper Kingdom | Aplikace pro elektrikáře</title>
-    <meta name="description" content="Interaktivní aplikace pro obor Elektrikář vytvořené v AI Studio Builderu">
+    <title>Volt & Amper Kingdom – výukové aplikace pro obor Elektrikář</title>
+    <meta name="description" content="Interaktivní výukové aplikace a simulace pro obor Elektrikář. Učte se elektrotechniku zábavně.">
+    <meta name="theme-color" content="#0a1628">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://elektrikar-apps.netlify.app/">
+    <meta property="og:title" content="Volt & Amper Kingdom – výukové aplikace pro obor Elektrikář">
+    <meta property="og:description" content="Interaktivní výukové aplikace a simulace pro obor Elektrikář. Učte se elektrotechniku zábavně.">
+    <meta property="og:image" content="https://elektrikar-apps.netlify.app/pic/index.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://elektrikar-apps.netlify.app/">
+    <meta name="twitter:title" content="Volt & Amper Kingdom – výukové aplikace pro obor Elektrikář">
+    <meta name="twitter:description" content="Interaktivní výukové aplikace a simulace pro obor Elektrikář. Učte se elektrotechniku zábavně.">
+    <meta name="twitter:image" content="https://elektrikar-apps.netlify.app/pic/index.png">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
     <link rel="stylesheet" href="styles/main.css?v=2">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -115,8 +132,8 @@
                 </div>
                 <div class="empty-state" id="emptyState">
                     <div class="empty-icon">🔌</div>
-                    <h3>Zatím žádné aplikace</h3>
-                    <p>Nahrajte ZIP soubor výše nebo přidejte aplikaci do složky <code>exercises/</code></p>
+                    <h3>Aplikace se nepodařilo načíst</h3>
+                    <p>Zkuste obnovit stránku nebo se vraťte později.</p>
                 </div>
             </div>
         </section>
@@ -169,10 +186,10 @@
     </div>
 
     <!-- Exercise Modal -->
-    <div class="modal" id="exerciseModal" hidden>
+    <div class="modal" id="exerciseModal" role="dialog" aria-modal="true" aria-label="Výuková aplikace" hidden>
         <div class="modal-backdrop"></div>
         <div class="modal-content">
-            <button class="modal-close" id="modalClose">✕</button>
+            <button class="modal-close" id="modalClose" aria-label="Zavřít aplikaci">✕</button>
             <iframe id="exerciseFrame" src="" frameborder="0"></iframe>
         </div>
     </div>
