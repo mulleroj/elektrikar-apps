@@ -91,6 +91,15 @@
       "isBuilt": true
     },
     {
+      "id": "pristroje-vn-a-vvn",
+      "name": "pristroje vn a vvn",
+      "description": "pristroje vn a vvn",
+      "icon": "🏗️",
+      "created": "2026-07-10",
+      "folder": "pristroje-vn-a-vvn",
+      "isBuilt": true
+    },
+    {
       "name": "Simulace sinusového napětí",
       "description": "Interaktivní výuková pomůcka pro vizualizaci elektromagnetické indukce v rotujícím vodiči.",
       "icon": "🎛️",
