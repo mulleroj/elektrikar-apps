@@ -1,67 +1,67 @@
 {
   "exercises": [
     {
+      "id": "asynchronni-stroje",
       "name": "Asynchronní stroje",
       "description": "Výuková aplikace pro asynchronní stroje",
       "icon": "🏗️",
-      "id": "asynchronni-stroje",
+      "created": "2026-03-05",
       "folder": "asynchronni-stroje",
-      "isBuilt": true,
-      "created": "2026-03-05"
+      "isBuilt": true
     },
     {
+      "id": "digitalni-elektrolaborator",
       "name": "Digitální Elektrolaboratoř",
       "description": "Interaktivní simulátor a generátor úkolů pro výpočty pro elektrikáře.",
       "icon": "🔢",
-      "id": "digitalni-elektrolaborator",
+      "created": "2026-03-10",
       "folder": "digitalni-elektrolaborator",
-      "isBuilt": true,
-      "created": "2026-03-10"
+      "isBuilt": true
     },
     {
+      "id": "dioda",
       "name": "Dioda: Interaktivní Průvodce",
       "description": "Interaktivní vzdělávací aplikace pro výuku principů fungování diod, PN přechodu a usměrňování proudu.",
       "icon": "⚡",
-      "id": "dioda",
+      "created": "2026-03-07",
       "folder": "dioda",
-      "isBuilt": true,
-      "created": "2026-03-07"
+      "isBuilt": true
     },
     {
+      "id": "elektrick-p-stroje-n-zk-ho-nap-t",
       "name": "Elektrické přístroje NN",
       "description": "Interaktivní vzdělávací aplikace o elektrických přístrojích (jističe, stykače atd.).",
       "icon": "🔌",
-      "id": "elektrick-p-stroje-n-zk-ho-nap-t",
+      "created": "2026-03-07",
       "folder": "elektrick-p-stroje-n-zk-ho-nap-t",
-      "isBuilt": true,
-      "created": "2026-03-07"
+      "isBuilt": true
     },
     {
+      "id": "elektro-prurez-master",
       "name": "Výpočet průřezu vodičů",
       "description": "kalkulačku výpočtu průřezu vodičů",
       "icon": "🔢",
-      "id": "elektro-prurez-master",
+      "created": "2026-05-04",
       "folder": "elektro-prurez-master",
-      "isBuilt": true,
-      "created": "2026-05-04"
+      "isBuilt": true
     },
     {
+      "id": "hopkinsonova-laborator-v2-1",
       "name": "Hopkinsonova laboratoř",
       "description": "Vysvětlení Hopkinsonova zákona",
       "icon": "👷",
-      "id": "hopkinsonova-laborator-v2-1",
+      "created": "2026-05-05",
       "folder": "hopkinsonova-laborator-v2-1",
-      "isBuilt": true,
-      "created": "2026-05-05"
+      "isBuilt": true
     },
     {
+      "id": "interaktivn-simul-tor-pojistky",
       "name": "Pojistky",
       "description": "Interaktivní vzdělávací aplikace vysvětlující princip, rychlost tavení a charakteristiky elektrické pojistky.",
       "icon": "⚡",
-      "id": "interaktivn-simul-tor-pojistky",
+      "created": "2026-03-06",
       "folder": "interaktivn-simul-tor-pojistky",
-      "isBuilt": true,
-      "created": "2026-03-06"
+      "isBuilt": true
     },
     {
       "id": "interaktivni-vyuka-hromosvody",
@@ -73,13 +73,13 @@
       "isBuilt": true
     },
     {
+      "id": "kondenzator-lab",
       "name": "Kondenzátor Lab",
       "description": "Fyzikální simulace reaktance & fázového posunu",
       "icon": "⚙️",
-      "id": "kondenzator-lab",
+      "created": "2026-05-05",
       "folder": "kondenzator-lab",
-      "isBuilt": true,
-      "created": "2026-05-05"
+      "isBuilt": true
     },
     {
       "id": "laborator-zesilovacu",
@@ -92,57 +92,57 @@
     },
     {
       "id": "pristroje-vn-a-vvn",
-      "name": "pristroje vn a vvn",
-      "description": "pristroje vn a vvn",
-      "icon": "🏗️",
+      "name": "Elektrické přístroje vysokého a velmi vysokého napětí",
+      "description": "Elektrické stroje a přístroje - 2. ročník",
+      "icon": "⚡",
       "created": "2026-07-10",
       "folder": "pristroje-vn-a-vvn",
       "isBuilt": true
     },
     {
+      "id": "simulace-sinusoveho-napeti",
       "name": "Simulace sinusového napětí",
       "description": "Interaktivní výuková pomůcka pro vizualizaci elektromagnetické indukce v rotujícím vodiči.",
       "icon": "🎛️",
-      "id": "simulace-sinusoveho-napeti",
+      "created": "2026-05-05",
       "folder": "simulace-sinusoveho-napeti",
-      "isBuilt": true,
-      "created": "2026-05-05"
+      "isBuilt": true
     },
     {
+      "id": "simulator-elektroinstalace-2",
       "name": "Simulátor elektroinstalace",
       "description": "Interaktivní simulátor proudové cesty s přepínači řazení 6 a 7, jističem a testem znalostí.",
       "icon": "🔢",
-      "id": "simulator-elektroinstalace-2",
+      "created": "2026-05-05",
       "folder": "simulator-elektroinstalace-2",
-      "isBuilt": true,
-      "created": "2026-05-05"
+      "isBuilt": true
     },
     {
+      "id": "synclab-v1-0",
       "name": "Synchronní stroje",
       "description": "Interaktivní simulátor synchronního stroje pro výuku fázování, synchronismu a porovnání s asynchronním strojem.",
       "icon": "🏗️",
-      "id": "synclab-v1-0",
+      "created": "2026-03-06",
       "folder": "synclab-v1-0",
-      "isBuilt": true,
-      "created": "2026-03-06"
+      "isBuilt": true
     },
     {
+      "id": "tranzistor-jako-spinac",
       "name": "Tranzistor jako spínač",
       "description": "Interaktivní simulátor tranzistoru v režimu spínače pro výuku elektroniky.",
       "icon": "⚡",
-      "id": "tranzistor-jako-spinac",
+      "created": "2026-03-10",
       "folder": "tranzistor-jako-spinac",
-      "isBuilt": true,
-      "created": "2026-03-10"
+      "isBuilt": true
     },
     {
+      "id": "virtu-ln-laborka-ss-stroje",
       "name": "Stejnosměrné stroje",
       "description": "Virtuální laboratoř stejnosměrných strojů",
       "icon": "🏗️",
-      "id": "virtu-ln-laborka-ss-stroje",
+      "created": "2026-03-07",
       "folder": "virtu-ln-laborka-ss-stroje",
-      "isBuilt": true,
-      "created": "2026-03-07"
+      "isBuilt": true
     }
   ]
 }
