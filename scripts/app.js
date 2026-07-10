@@ -366,7 +366,8 @@ function launchExercise(id) {
     const exercise = builtExercises.find(e => e.id === id);
     if (!exercise) return;
     if (exercise.isBuilt) {
-        window.open(`exercises/${exercise.folder}/`, '_blank');
+        // Open the play.html wrapper in a new tab with noopener,noreferrer security
+        window.open(`play.html?app=${encodeURIComponent(exercise.folder)}`, '_blank', 'noopener,noreferrer');
     }
 }
 
