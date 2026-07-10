@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Volt & Amper Kingdom – Načítání...</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/play.css">
+</head>
+<body>
+    <!-- Loading State -->
+    <div id="loadingView" class="status-container">
+        <div class="spinner"></div>
+        <p>Načítám výukovou aplikaci...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorView" class="status-container" style="display: none;">
+        <div class="error-icon">🔌</div>
+        <h1 id="errorTitle">Aplikaci se nepodařilo načíst</h1>
+        <p id="errorMessage">Omlouváme se, ale nastala chyba při načítání aplikace.</p>
+        <a href="index.html" class="btn btn-secondary">← Zpět do galerie</a>
+    </div>
+
+    <!-- App Wrapper View -->
+    <div id="appView" class="app-wrapper" style="display: none;">
+        <header class="play-header">
+            <div class="app-title-wrapper">
+                <span id="appIcon" class="app-icon">⚡</span>
+                <span id="appTitle" class="app-title">Výuková aplikace</span>
+            </div>
+            <a href="index.html" class="back-link">← Zpět do galerie</a>
+        </header>
+        <div class="iframe-container">
+            <iframe id="appFrame" title="Spuštěná výuková aplikace" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const appSlug = params.get('app');
+
+            if (!appSlug) {
+                showError('Chybějící aplikace', 'V URL adrese nebyl zadán identifikátor aplikace.');
+                return;
+            }
+
+            try {
+                const response = await fetch('exercises/manifest.json');
+                if (!response.ok) {
+                    throw new Error('Chyba při načítání manifestu aplikací.');
+                }
+                const manifest = await response.json();
+                const exercises = manifest.exercises || [];
+                
+                // Find exact match based on folder slug (safe verification)
+                const foundApp = exercises.find(e => e.folder === appSlug);
+
+                if (!foundApp) {
+                    showError('Aplikace nenalezena', 'Požadovaná výuková aplikace neexistuje nebo byla odstraněna.');
+                    return;
+                }
+
+                // Safely update DOM using textContent (no innerHTML to prevent XSS)
+                document.getElementById('appTitle').textContent = foundApp.name || foundApp.folder;
+                document.getElementById('appIcon').textContent = foundApp.icon || '⚡';
+                document.title = `${foundApp.name || foundApp.folder} | Volt & Amper Kingdom`;
+
+                // Set iframe src strictly from verified folder in manifest
+                const iframe = document.getElementById('appFrame');
+                iframe.src = `exercises/${foundApp.folder}/`;
+
+                // Show wrapper and hide loading
+                document.getElementById('loadingView').style.display = 'none';
+                document.getElementById('appView').style.display = 'flex';
+            } catch (err) {
+                console.error(err);
+                showError('Chyba načítání', 'Nepodařilo se načíst manifest aplikací ze serveru. Zkuste to prosím později.');
+            }
+        });
+
+        function showError(title, message) {
+            document.title = 'Chyba | Volt & Amper Kingdom';
+            document.getElementById('loadingView').style.display = 'none';
+            document.getElementById('appView').style.display = 'none';
+            
+            document.getElementById('errorTitle').textContent = title;
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorView').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
