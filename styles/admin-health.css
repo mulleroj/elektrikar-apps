@@ -141,6 +141,8 @@
 .health-system-section,
 .health-apps-section {
     margin-top: 24px;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .health-system-section h4,
@@ -152,6 +154,7 @@
 
 .health-table {
     width: 100%;
+    min-width: 640px;
     border-collapse: collapse;
     text-align: left;
     font-size: 0.85rem;
@@ -165,6 +168,7 @@
 .health-table td {
     padding: 10px 12px;
     border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
 }
 
 .health-table th {
@@ -257,7 +261,8 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     background: rgba(255, 255, 255, 0.005);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .health-details-collapse summary {

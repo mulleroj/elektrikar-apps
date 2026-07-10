@@ -13,15 +13,15 @@ export function initAdminHealth() {
     // Title & Header
     const header = document.createElement('div');
     header.className = 'health-check-header';
-    
+
     const icon = document.createElement('span');
     icon.className = 'health-check-icon';
     icon.textContent = '🔍';
-    
+
     const title = document.createElement('h3');
     title.id = 'healthCheckTitle';
     title.textContent = 'Kontrola zdraví galerie';
-    
+
     header.appendChild(icon);
     header.appendChild(title);
     panel.appendChild(header);
@@ -43,16 +43,16 @@ export function initAdminHealth() {
     const progressContainer = document.createElement('div');
     progressContainer.id = 'healthCheckProgress';
     progressContainer.className = 'health-check-progress hidden';
-    
+
     const progressBar = document.createElement('progress');
     progressBar.id = 'healthCheckProgressFill';
     progressBar.max = 100;
     progressBar.value = 0;
-    
+
     const progressText = document.createElement('p');
     progressText.id = 'healthCheckProgressText';
     progressText.textContent = 'Připravuji kontrolu...';
-    
+
     progressContainer.appendChild(progressBar);
     progressContainer.appendChild(progressText);
     panel.appendChild(progressContainer);
@@ -88,7 +88,7 @@ async function startGalleryCheck(runBtn, progressContainer, progressBar, progres
     // UI state change to active
     runBtn.disabled = true;
     panel.setAttribute('aria-busy', 'true');
-    
+
     progressContainer.classList.remove('hidden');
     progressBar.value = 0;
     progressBar.removeAttribute('value'); // indeterminate state initially
@@ -145,10 +145,10 @@ async function startGalleryCheck(runBtn, progressContainer, progressBar, progres
         panel.setAttribute('aria-busy', 'false');
         runBtn.disabled = false;
         progressContainer.classList.add('hidden');
-        
+
         const errMsg = `Neočekávaná chyba při diagnostice: ${err.message}`;
         liveRegion.textContent = errMsg;
-        
+
         progressText.textContent = errMsg;
         progressContainer.classList.remove('hidden');
     }
@@ -167,18 +167,18 @@ function renderSummary(container, results) {
     const createStat = (label, value, isBad, isWarn, isGood) => {
         const item = document.createElement('div');
         item.className = 'health-stat-item';
-        
+
         const textLabel = document.createElement('span');
         textLabel.className = 'health-stat-label';
         textLabel.textContent = label;
-        
+
         const textVal = document.createElement('strong');
         textVal.className = 'health-stat-value';
         if (isBad) textVal.classList.add('text-danger');
         if (isWarn) textVal.classList.add('text-warning');
         if (isGood) textVal.classList.add('text-success');
         textVal.textContent = value;
-        
+
         item.appendChild(textLabel);
         item.appendChild(textVal);
         return item;
@@ -204,14 +204,14 @@ function renderDetails(container, results) {
     // 1. System files table/list
     const sysSection = document.createElement('div');
     sysSection.className = 'health-system-section';
-    
+
     const sysTitle = document.createElement('h4');
     sysTitle.textContent = 'Systémové soubory';
     sysSection.appendChild(sysTitle);
 
     const sysTable = document.createElement('table');
     sysTable.className = 'health-table';
-    
+
     const sysThead = document.createElement('thead');
     const sysTheadRow = document.createElement('tr');
     for (const label of ['Soubor', 'Stav', 'Detail zprávy']) {
@@ -225,11 +225,11 @@ function renderDetails(container, results) {
     const sysTbody = document.createElement('tbody');
     for (const sys of results.systemFiles) {
         const tr = document.createElement('tr');
-        
+
         const tdName = document.createElement('td');
         tdName.className = 'health-font-mono';
         tdName.textContent = sys.name;
-        
+
         const tdStatus = document.createElement('td');
         const badge = document.createElement('span');
         badge.className = `health-badge badge-${sys.status.toLowerCase()}`;
@@ -266,7 +266,7 @@ function renderDetails(container, results) {
     // Build apps table
     const appsTable = document.createElement('table');
     appsTable.className = 'health-table';
-    
+
     const appsThead = document.createElement('thead');
     const appsTheadRow = document.createElement('tr');
     for (const label of ['Název', 'Složka', 'Manifest', 'index.html', 'Celkový stav', 'Odkaz']) {
@@ -285,13 +285,13 @@ function renderDetails(container, results) {
         const td = document.createElement('td');
         td.colSpan = 6;
         td.className = 'text-danger text-center';
-        
+
         const codeSpan = document.createElement('strong');
         codeSpan.textContent = `[${results.manifestStatus.code}] `;
-        
+
         const textSpan = document.createElement('span');
         textSpan.textContent = results.manifestStatus.message;
-        
+
         td.appendChild(codeSpan);
         td.appendChild(textSpan);
         tr.appendChild(td);
@@ -299,7 +299,7 @@ function renderDetails(container, results) {
     } else {
         for (const app of results.apps) {
             const tr = document.createElement('tr');
-            
+
             // Name / Icon
             const tdName = document.createElement('td');
             const iconSpan = document.createElement('span');
@@ -328,7 +328,7 @@ function renderDetails(container, results) {
                 badge.className = 'health-badge badge-chyba';
                 badge.textContent = 'CHYBA';
                 tdManifest.appendChild(badge);
-                
+
                 const msgDiv = document.createElement('div');
                 msgDiv.className = 'health-table-error-desc';
                 msgDiv.textContent = app.manifestMessage;
@@ -349,7 +349,7 @@ function renderDetails(container, results) {
                 badge.className = 'health-badge badge-chyba';
                 badge.textContent = 'CHYBA';
                 tdHtml.appendChild(badge);
-                
+
                 const msgDiv = document.createElement('div');
                 msgDiv.className = 'health-table-error-desc';
                 msgDiv.textContent = app.indexHtmlMessage;
@@ -366,12 +366,12 @@ function renderDetails(container, results) {
             if (app.overallStatus !== 'PASS') {
                 const codeSpan = document.createElement('div');
                 codeSpan.className = 'health-table-error-desc';
-                
+
                 const boldCode = document.createElement('strong');
                 boldCode.textContent = `[${app.code}] `;
                 const textSpan = document.createElement('span');
                 textSpan.textContent = app.message;
-                
+
                 codeSpan.appendChild(boldCode);
                 codeSpan.appendChild(textSpan);
                 tdOverall.appendChild(codeSpan);
@@ -405,13 +405,13 @@ function renderDetails(container, results) {
     if (results.summary.errors === 0) {
         const detailsEl = document.createElement('details');
         detailsEl.className = 'health-details-collapse';
-        
+
         const summaryEl = document.createElement('summary');
         summaryEl.textContent = 'Zobrazit detailní výpis aplikací (Všechny aplikace jsou PASS)';
-        
+
         detailsEl.appendChild(summaryEl);
         detailsEl.appendChild(appsTable);
-        
+
         appsSection.appendChild(appsTitle);
         appsSection.appendChild(detailsEl);
     } else {

@@ -175,7 +175,7 @@ export async function runHealthCheck({
                 results.summary.validItems++;
                 // Build wrapper URL safely
                 appResult.wrapperUrl = `play.html?app=${encodeURIComponent(item.folder)}`;
-                
+
                 // Add warnings if present and no errors
                 if (warnings.length > 0) {
                     appResult.overallStatus = 'VAROVÁNÍ';
