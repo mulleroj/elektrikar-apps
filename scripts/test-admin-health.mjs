@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { runHealthCheck } from './admin-health-core.mjs';
+import { getCollapsedAppDetailsSummary } from './admin-health.js';
 
 const MOCK_ORIGIN = 'http://localhost';
 
@@ -697,6 +698,19 @@ await (async () => {
     assert.ok(fetchedUrls.some(u => u.includes('sitemap.xml')));
     console.log('✅ Test "System files checked when manifest fails" passed.');
 })();
+
+// UI detail visibility: collapse only when there are no errors or warnings
+assert.strictEqual(
+    getCollapsedAppDetailsSummary({ errors: 0, warnings: 0 }),
+    'Zobrazit detailní výpis aplikací (Všechny aplikace jsou PASS)'
+);
+console.log('Test "Clean UI details are collapsed with PASS summary" passed.');
+
+assert.strictEqual(getCollapsedAppDetailsSummary({ errors: 0, warnings: 1 }), null);
+console.log('Test "Warning UI details stay immediately visible" passed.');
+
+assert.strictEqual(getCollapsedAppDetailsSummary({ errors: 1, warnings: 0 }), null);
+console.log('Test "Error UI details stay immediately visible" passed.');
 
 console.log('\n=========================================');
 console.log('✅ ALL HEALTH CHECK CORE TESTS PASSED!');

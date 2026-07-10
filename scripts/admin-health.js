@@ -198,6 +198,13 @@ function renderSummary(container, results) {
     container.appendChild(timestamp);
 }
 
+export function getCollapsedAppDetailsSummary(summary) {
+    if (summary.errors === 0 && summary.warnings === 0) {
+        return 'Zobrazit detailní výpis aplikací (Všechny aplikace jsou PASS)';
+    }
+    return null;
+}
+
 function renderDetails(container, results) {
     container.classList.remove('hidden');
 
@@ -401,13 +408,14 @@ function renderDetails(container, results) {
     }
     appsTable.appendChild(appsTbody);
 
-    // Collapsible logic: wrap details in <details> if there are no errors
-    if (results.summary.errors === 0) {
+    // Collapse only when every application is fully clean.
+    const collapsedSummary = getCollapsedAppDetailsSummary(results.summary);
+    if (collapsedSummary) {
         const detailsEl = document.createElement('details');
         detailsEl.className = 'health-details-collapse';
 
         const summaryEl = document.createElement('summary');
-        summaryEl.textContent = 'Zobrazit detailní výpis aplikací (Všechny aplikace jsou PASS)';
+        summaryEl.textContent = collapsedSummary;
 
         detailsEl.appendChild(summaryEl);
         detailsEl.appendChild(appsTable);
