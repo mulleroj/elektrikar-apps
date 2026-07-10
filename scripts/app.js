@@ -62,6 +62,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     initSettingsForm();
     await loadBuiltExercises();
     renderExercises();
+
+    if (isAdmin) {
+        if (!document.getElementById('adminHealthStyle')) {
+            const link = document.createElement('link');
+            link.id = 'adminHealthStyle';
+            link.rel = 'stylesheet';
+            link.href = 'styles/admin-health.css?v=1';
+            document.head.appendChild(link);
+        }
+
+        import('./admin-health.js?v=1')
+            .then(({ initAdminHealth }) => {
+                initAdminHealth();
+            })
+            .catch(err => {
+                console.error('Nepodařilo se načíst diagnostický nástroj:', err.message);
+                const panel = document.getElementById('healthCheckPanel');
+                if (panel) {
+                    panel.hidden = false;
+                    panel.textContent = 'Nepodařilo se načíst diagnostický panel.';
+                }
+            });
+    }
 });
 
 // ===== GitHub Settings =====
