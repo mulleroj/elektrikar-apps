@@ -1,0 +1,318 @@
+/* Styles for Gallery Health Check Panel (Admin only) */
+
+.health-check-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 24px;
+    box-shadow: var(--shadow-lg);
+    font-family: 'Outfit', sans-serif;
+}
+
+.health-check-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+
+.health-check-icon {
+    font-size: 1.5rem;
+}
+
+.health-check-panel h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.health-check-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.health-check-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.health-check-progress {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.health-check-progress progress {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    border: none;
+    background-color: var(--border);
+    margin-bottom: 8px;
+}
+
+.health-check-progress progress::-webkit-progress-bar {
+    background-color: var(--border);
+}
+
+.health-check-progress progress::-webkit-progress-value {
+    background: var(--gradient-1);
+}
+
+.health-check-progress progress::-moz-progress-bar {
+    background: var(--gradient-1);
+}
+
+#healthCheckProgressText {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.health-check-summary {
+    margin-top: 24px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.health-check-summary h4 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.health-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.health-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.health-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.health-stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.health-check-timestamp {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 12px 0 0 0;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+}
+
+/* Tabulky */
+.health-system-section,
+.health-apps-section {
+    margin-top: 24px;
+}
+
+.health-system-section h4,
+.health-apps-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+}
+
+.health-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.health-table th,
+.health-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.health-table th {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.health-table tr:last-child td {
+    border-bottom: none;
+}
+
+.health-table tr:hover td {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+/* Badges */
+.health-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.badge-pass {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-varování {
+    background: rgba(245, 158, 11, 0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge-chyba {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Helpers */
+.health-font-mono {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.health-code-label {
+    color: var(--text-muted);
+}
+
+.health-table-error-desc {
+    font-size: 0.8rem;
+    color: #fca5a5;
+    margin-top: 4px;
+    line-height: 1.3;
+}
+
+.app-table-icon {
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+.app-table-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.health-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.health-link:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+.health-details-collapse {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.005);
+    overflow: hidden;
+}
+
+.health-details-collapse summary {
+    padding: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: background 0.2s;
+}
+
+.health-details-collapse summary:hover,
+.health-details-collapse summary:focus {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-primary);
+}
+
+.health-details-collapse[open] summary {
+    border-bottom: 1px solid var(--border);
+}
+
+.health-details-collapse .health-table {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+
+/* Text Colors */
+.text-danger {
+    color: #ef4444 !important;
+}
+
+.text-warning {
+    color: #fbbf24 !important;
+}
+
+.text-success {
+    color: #10b981 !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Utility Hidden */
+.hidden {
+    display: none !important;
+}
+
+/* Focus indicator accessibility */
+.health-check-btn:focus-visible,
+.health-details-collapse summary:focus-visible,
+.health-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
