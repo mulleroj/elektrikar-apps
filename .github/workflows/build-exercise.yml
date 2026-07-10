@@ -136,6 +136,10 @@ jobs:
         run: |
           node scripts/recover-metadata.js
 
+      - name: Validate gallery integrity
+        run: |
+          node scripts/validate-gallery.mjs
+
       - name: Commit built apps
         run: |
           git config --local user.email "action@github.com"

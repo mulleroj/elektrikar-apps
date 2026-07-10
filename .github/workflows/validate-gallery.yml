@@ -1,0 +1,54 @@
+name: Validate Gallery Integrity
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "exercises/**"
+      - "scripts/validate-gallery.mjs"
+      - "scripts/test-validator.mjs"
+      - "scripts/recover-metadata.js"
+      - "scripts/app.js"
+      - "play.html"
+      - "package.json"
+      - ".github/workflows/build-exercise.yml"
+      - ".github/workflows/validate-gallery.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "exercises/**"
+      - "scripts/validate-gallery.mjs"
+      - "scripts/test-validator.mjs"
+      - "scripts/recover-metadata.js"
+      - "scripts/app.js"
+      - "play.html"
+      - "package.json"
+      - ".github/workflows/build-exercise.yml"
+      - ".github/workflows/validate-gallery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run Validator Unit Tests
+        run: |
+          node scripts/test-validator.mjs
+
+      - name: Run Gallery Validation
+        run: |
+          node scripts/validate-gallery.mjs
