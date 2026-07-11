@@ -1,9 +1,6 @@
 {
-  "id": "interaktivni-vycvik-elektrikaru",
-  "name": "interaktivni vycvik elektrikaru",
-  "description": "interaktivni vycvik elektrikaru",
+  "name": "Elektrické přístroje nízkého napětí",
+  "description": "Elektrické stroje a přístroje - 2. ročník",
   "icon": "⚡",
-  "created": "2026-07-11",
-  "folder": "interaktivni-vycvik-elektrikaru",
-  "isBuilt": true
+  "updated": "2026-07-11"
 }
