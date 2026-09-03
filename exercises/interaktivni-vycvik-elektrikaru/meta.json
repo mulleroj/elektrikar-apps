@@ -2,5 +2,8 @@
   "name": "Elektrické přístroje nízkého napětí",
   "description": "Elektrické stroje a přístroje - 2. ročník",
   "icon": "⚡",
-  "updated": "2026-07-11"
+  "id": "interaktivni-vycvik-elektrikaru",
+  "folder": "interaktivni-vycvik-elektrikaru",
+  "isBuilt": true,
+  "created": "2026-07-11"
 }
